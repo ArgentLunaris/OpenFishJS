@@ -4,9 +4,13 @@ import {Box} from '@mui/material';
 import { useState, useEffect } from 'react';
 import Water from './components/Water/Water';
 
+
 function App() {
 
   const viewportHeightDivision = 1.5;
+
+  const baseWaterSpeed = 5;
+  const waterSpeedDifference = 3;
 
   const [screenSize, setScreenSize] = useState(visualViewport.height/viewportHeightDivision);
   const [waterSpeed, setWaterSpeed] = useState(10);
@@ -21,16 +25,16 @@ function App() {
 
     const inputHandler = (event)=>{
       if(event.key == "ArrowRight"){
-        setWaterSpeed(5);
+        setWaterSpeed(baseWaterSpeed-waterSpeedDifference);
       }
       if( event.key == "ArrowLeft"){
-        setWaterSpeed(15)
+        setWaterSpeed(baseWaterSpeed+waterSpeedDifference)
       }
     }
 
     const resetWaterSpeed = (event)=>{
       if(event.key == "ArrowRight" || event.key == "ArrowLeft"){
-        setWaterSpeed(10);
+        setWaterSpeed(baseWaterSpeed);
       }
     }
 
@@ -52,7 +56,9 @@ function App() {
       
       </Box>
 
-      <Water animSpeed={waterSpeed}></Water>
+      <Water animSpeed={waterSpeed}>
+        
+      </Water>
 
     
       

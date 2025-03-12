@@ -1,17 +1,13 @@
-.container{
+.wavesContainer{
     display: flex;
     flex-direction: row;
-    position: relative;
-    animation-name: test;
-    animation-duration: 10s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
     
 }
 
+.bigContainer{
+    display: flex;
+}
 
-@keyframes test {
-    0% {left: -0%}
-    50% {left: -137.583mm}
-    100% {left: calc(-137.583mm * 2)}
+img{
+    position: relative;
 }

@@ -1,0 +1,7 @@
+.ship{
+    display: flex;
+    float: left;
+    width: 300px;
+    position: relative;
+    bottom: -5vh;
+}
