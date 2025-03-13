@@ -1,5 +1,4 @@
 import './App.css';
-import Wave from 'react-wavify';
 import {Box} from '@mui/material';
 import { useState, useEffect } from 'react';
 import Water from './components/Water/Water';
