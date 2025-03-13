@@ -3,7 +3,7 @@ import Wave from 'react-wavify';
 import {Box} from '@mui/material';
 import { useState, useEffect } from 'react';
 import Water from './components/Water/Water';
-
+import NavBar from './components/NavBar/NavBar';
 
 function App() {
 
@@ -49,6 +49,8 @@ function App() {
 
   return (
     <>
+
+      <NavBar></NavBar>
 
       {/*<p>Fish Installed WIndos XP</p>*/}
       <Box flexGrow={1} flexDirection={"column"} height={screenSize} visibility={"hidden"}>
