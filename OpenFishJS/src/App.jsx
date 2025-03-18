@@ -8,11 +8,16 @@ function App() {
 
   const viewportHeightDivision = 1.5;
 
-  const baseWaterSpeed = 5;
-  const waterSpeedDifference = 3;
+  const baseWaterSpeed = 10;
+  const waterSpeedDifference = 5;
 
   const [screenSize, setScreenSize] = useState(visualViewport.height/viewportHeightDivision);
   const [waterSpeed, setWaterSpeed] = useState(10);
+
+  const [shoreDistance, setShoreDistance] = useState(0);
+  const [moveSpeed, setMoveSpeed] = useState(0);
+
+  let moveTimer;
 
   useEffect(()=>{
     visualViewport.addEventListener("resize", ()=>{
@@ -22,18 +27,35 @@ function App() {
 
   useEffect(()=>{
 
+    moveTimer = setInterval(() => {
+      if(shoreDistance>0 || moveSpeed > 0){
+        setShoreDistance(shoreDistance + moveSpeed) 
+      }
+      
+      
+    }, 333)
+
     const inputHandler = (event)=>{
       if(event.key == "ArrowRight"){
         setWaterSpeed(baseWaterSpeed-waterSpeedDifference);
+        setMoveSpeed(1)
       }
       if( event.key == "ArrowLeft"){
-        setWaterSpeed(baseWaterSpeed+waterSpeedDifference)
+        if(shoreDistance > 0){
+          setWaterSpeed(baseWaterSpeed+waterSpeedDifference)
+          setMoveSpeed(-1)
+        }else{
+          setWaterSpeed(baseWaterSpeed);
+        }
+        
       }
     }
 
     const resetWaterSpeed = (event)=>{
       if(event.key == "ArrowRight" || event.key == "ArrowLeft"){
         setWaterSpeed(baseWaterSpeed);
+        setMoveSpeed(0);
+        
       }
     }
 
@@ -43,13 +65,14 @@ function App() {
     return ()=> {
       document.removeEventListener("keydown", inputHandler)
       document.removeEventListener("keyup", resetWaterSpeed)
+      clearInterval(moveTimer)
     };
-  }, [])
+  }, [shoreDistance,moveSpeed])
 
   return (
     <>
 
-      <NavBar></NavBar>
+      <NavBar distance={shoreDistance}></NavBar>
 
       {/*<p>Fish Installed WIndos XP</p>*/}
       <Box flexGrow={1} flexDirection={"column"} height={screenSize} visibility={"hidden"}>

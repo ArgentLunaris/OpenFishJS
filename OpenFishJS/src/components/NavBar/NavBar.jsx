@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, createTheme, ThemeProvider, Toolbar, Typography} from '@mui/material';
 
-export default function NavBar(){
+export default function NavBar({distance}){
 
     const theme = createTheme({
         typography: {
@@ -8,7 +8,7 @@ export default function NavBar(){
         }
     })
 
-    return <AppBar position='static' th sx={{
+    return <AppBar position='static' sx={{
         backgroundColor: '#00000055',
         boxShadow: 'none',
         color:'white'
@@ -27,7 +27,7 @@ export default function NavBar(){
                 display:'flex',
                 justifyContent:'center'
             }}>
-                <Typography sx={{fontSize:'large'}}>0 meters from shore</Typography>
+                <Typography sx={{fontSize:'large'}}>{distance} meters from shore</Typography>
             </Box>
             
 
