@@ -80,7 +80,7 @@ function App() {
       
       </Box>
 
-      <Water animSpeed={waterSpeed}>
+      <Water animSpeed={waterSpeed} direction={moveSpeed}>
         
       </Water>
 

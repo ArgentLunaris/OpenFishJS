@@ -9,10 +9,33 @@
     transform: scalex(-1);
     z-index: -1;
     opacity: 1;
+    
+}
+
+.move_forwards{
+    animation-name: move_forwards;
+    animation-duration: 1s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-delay: 0ms;
+}
+
+.move_backwards{
+    animation-name: move_backwards;
+    animation-duration: 1s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-delay: 0ms;
+    transform: scalex(1);
+}
+
+.idle{
     animation-name: idle;
     animation-duration: 5s;
-    animation-iteration-count: infinite;
     animation-direction: alternate;
+    animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
     animation-delay: 0ms;
 }
@@ -20,4 +43,14 @@
 @keyframes idle {
     0% {rotate: 5deg;}
     100% {rotate: -5deg;}
+}
+
+@keyframes move_forwards {
+    0% {rotate: -2deg;}
+    100% {rotate: -7deg;}
+}
+
+@keyframes move_backwards {
+    0% {rotate: 2deg;}
+    100% {rotate: 7deg;}
 }

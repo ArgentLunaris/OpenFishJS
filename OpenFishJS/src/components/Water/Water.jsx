@@ -4,7 +4,7 @@ import styles from "./Water.module.css";
 import { useEffect, useState } from "react";
 import Ship from "../Ship/Ship";
 
-export default function Water({animSpeed}) {
+export default function Water({animSpeed, direction}) {
 
     let looper;
 
@@ -32,7 +32,7 @@ export default function Water({animSpeed}) {
         <img src={waves} style={{left: -waveProgress}}></img>
 
     </div>;
-    <Ship></Ship>
+    <Ship direction={direction} ></Ship>
     
     </div>
 }
