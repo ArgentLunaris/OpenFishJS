@@ -46,6 +46,7 @@ function App() {
           setMoveSpeed(-1)
         }else{
           setWaterSpeed(baseWaterSpeed);
+          setMoveSpeed(0);
         }
         
       }

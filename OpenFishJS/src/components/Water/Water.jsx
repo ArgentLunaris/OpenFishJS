@@ -12,10 +12,18 @@ export default function Water({animSpeed, direction}) {
 
     useEffect(()=>{
         looper = setInterval(()=>{
-            setWaveProgress(waveProgress+1)
-            if(waveProgress >= 520){
-                setWaveProgress(0)
+            if(direction >= 0){
+                setWaveProgress(waveProgress+1)
+                if(waveProgress >= 520){
+                    setWaveProgress(0)
+                }
+            }else{
+                setWaveProgress(waveProgress-1)
+                if(waveProgress <= 0){
+                    setWaveProgress(520)
+                }
             }
+            
         }, animSpeed)
         return ()=> clearInterval(looper)
     },[waveProgress])
