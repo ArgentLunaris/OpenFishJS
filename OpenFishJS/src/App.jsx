@@ -3,6 +3,7 @@ import {Box} from '@mui/material';
 import { useState, useEffect } from 'react';
 import Water from './components/Water/Water';
 import NavBar from './components/NavBar/NavBar';
+import axios from 'axios';
 
 function App() {
 
@@ -19,7 +20,12 @@ function App() {
 
   let moveTimer;
 
+  const getFish = () => {
+    axios.get("/api/fish").then((response) => console.log(response)).catch((error) => console.error(error));
+  } 
+
   useEffect(()=>{
+    getFish()
     visualViewport.addEventListener("resize", ()=>{
       setScreenSize(visualViewport.height/viewportHeightDivision)
     })
