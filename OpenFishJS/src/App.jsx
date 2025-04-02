@@ -3,7 +3,7 @@ import {Box} from '@mui/material';
 import { useState, useEffect } from 'react';
 import Water from './components/Water/Water';
 import NavBar from './components/NavBar/NavBar';
-import axios from 'axios';
+import FishPedia from './components/FishPedia/FishPedia';
 
 function App() {
 
@@ -20,12 +20,11 @@ function App() {
 
   let moveTimer;
 
-  const getFish = () => {
-    axios.get("/api/fish").then((response) => console.log(response)).catch((error) => console.error(error));
-  } 
+  const [isPediaOpen, setIsPediaOpen] = useState(false);
+
+
 
   useEffect(()=>{
-    getFish()
     visualViewport.addEventListener("resize", ()=>{
       setScreenSize(visualViewport.height/viewportHeightDivision)
     })
@@ -76,11 +75,16 @@ function App() {
     };
   }, [shoreDistance,moveSpeed])
 
+  const togglePedia = () => {
+    setIsPediaOpen(!isPediaOpen);
+  }
+
   return (
     <>
 
-      <NavBar distance={shoreDistance}></NavBar>
+      <NavBar distance={shoreDistance} togglePedia={togglePedia}></NavBar>
 
+      <FishPedia open={isPediaOpen}></FishPedia>
       {/*<p>Fish Installed WIndos XP</p>*/}
       <Box flexGrow={1} flexDirection={"column"} height={screenSize} visibility={"hidden"}>
         
@@ -91,7 +95,6 @@ function App() {
         
       </Water>
 
-    
       
     </>
   )
