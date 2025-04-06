@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Typography, Link } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from "axios";
 import styles from "./FishPedia.module.css";
@@ -12,11 +12,10 @@ export default function FishPedia({open}){
     return {
       backgroundColor: "rgba(255,255,255,0.1)",
       color:"white",
-      fontFamily: "Itim",
       marginLeft:5,
       marginRight:5,
       '.MuiAccordionDetails-root': {marginLeft:5, marginRight:5,},
-      '.MuiAccordionSummary-root': {marginLeft:5, marginRight:5,}, // this apply to Summary
+      '.MuiAccordionSummary-root': {marginLeft:5, marginRight:5,},
     };
   });
 
@@ -47,6 +46,7 @@ export default function FishPedia({open}){
     useEffect(()=>{
       setCurrentAnim((open)?styles.slideIn:styles.slideOut);
       
+      
     },[open])
 
     return <div className={`${styles.container} ${currentAnim}`}>
@@ -60,10 +60,17 @@ export default function FishPedia({open}){
               <Typography component="span" sx={{ width: '33%', flexShrink: 0 }} fontFamily={"Itim"}>
                 {f.species}
               </Typography>
+              <Typography component="span" variant="text.secondary" sx={{ width: '33%', flexShrink: 0 }} fontFamily={"Itim"}>
+                Rarity: {f.rarity}
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography fontFamily={"Itim"}>
                 ${f.description}
+                <br></br>
+                <Link href={f.wiki} color="#ffffff" target="_blank" rel="noopener">
+                Read More
+                </Link>
               </Typography>
             </AccordionDetails>
           </CustomAccordion>
