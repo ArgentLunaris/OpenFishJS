@@ -1,0 +1,43 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+
+    top: 30%;
+    align-items: center;
+
+    color: black;
+
+    font-family: "itim";
+
+    width: 100vw;
+    height: 100vh;
+
+}
+
+.bar{
+    background-color: darkred;
+    width: 200px;
+    padding: 0;
+
+}
+
+.barContainer{
+    position: relative;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.green{
+    background-color: lawngreen;
+    width: 70px;
+    float: right;
+    height: 20px;
+}
+
+.pointer{
+    position: absolute;
+    top: 100%;
+    left: 94%;
+}

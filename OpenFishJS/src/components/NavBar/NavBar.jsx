@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, createTheme, ThemeProvider, Toolbar, Typography} from '@mui/material';
 
-export default function NavBar({distance}){
+export default function NavBar({distance, togglePedia}){
 
     const theme = createTheme({
         typography: {
@@ -15,7 +15,7 @@ export default function NavBar({distance}){
     }}>
         <ThemeProvider theme={theme}>
         <Toolbar>
-            <Button color='white' variant='text' sx={{textTransform: 'capitalize', fontSize:'large'}}>FishPedia</Button>
+            <Button color='white' variant='text' sx={{textTransform: 'capitalize', fontSize:'large'}} onClick={()=>{togglePedia()}}>FishPedia</Button>
 
             <Typography sx={{
                 position:'relative',

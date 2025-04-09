@@ -1,0 +1,23 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.281);
+    width: 40%;
+    float: right;
+
+    position: relative;
+
+    right: -40%;
+
+    transition: right 1s;
+}
+
+.slideOut{
+    right: -40%;
+}
+
+.slideIn{
+   right: 0%;
+}
+
