@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Water from './components/Water/Water';
 import NavBar from './components/NavBar/NavBar';
 import FishPedia from './components/FishPedia/FishPedia';
+import FishingMiniGame from './components/FishingMiniGame/FishingMiniGame';
 
 function App() {
 
@@ -22,13 +23,16 @@ function App() {
 
   const [isPediaOpen, setIsPediaOpen] = useState(false);
 
+  const [isMinigameActive, setIsMinigameActive] = useState(false);
 
+  const [canStartMinigame, setCanStartMinigame] = useState(true);
 
   useEffect(()=>{
     visualViewport.addEventListener("resize", ()=>{
       setScreenSize(visualViewport.height/viewportHeightDivision)
     })
   }, [])
+
 
   useEffect(()=>{
 
@@ -41,19 +45,22 @@ function App() {
     }, 333)
 
     const inputHandler = (event)=>{
-      if(event.key == "ArrowRight"){
-        setWaterSpeed(baseWaterSpeed-waterSpeedDifference);
-        setMoveSpeed(1)
-      }
-      if( event.key == "ArrowLeft"){
-        if(shoreDistance > 0){
-          setWaterSpeed(baseWaterSpeed+waterSpeedDifference)
-          setMoveSpeed(-1)
-        }else{
-          setWaterSpeed(baseWaterSpeed);
-          setMoveSpeed(0);
+      
+      if(isMinigameActive == false){
+        if(event.key == "ArrowRight"){
+          setWaterSpeed(baseWaterSpeed-waterSpeedDifference);
+          setMoveSpeed(1)
         }
-        
+        if( event.key == "ArrowLeft"){
+          if(shoreDistance > 0){
+            setWaterSpeed(baseWaterSpeed+waterSpeedDifference)
+            setMoveSpeed(-1)
+          }else{
+            setWaterSpeed(baseWaterSpeed);
+            setMoveSpeed(0);
+          }
+          
+        }
       }
     }
 
@@ -63,6 +70,20 @@ function App() {
         setMoveSpeed(0);
         
       }
+      
+      if(event.key == " "){
+        if(canStartMinigame && !isMinigameActive){
+          setIsMinigameActive(true)
+        }else if(isMinigameActive){
+          setIsMinigameActive(false)
+          setCanStartMinigame(false)
+          let looper = setInterval(()=>{
+            setCanStartMinigame(true)
+            clearInterval(looper)
+          }, 2000)
+        }
+        
+    }
     }
 
     document.addEventListener("keydown", inputHandler)
@@ -73,7 +94,7 @@ function App() {
       document.removeEventListener("keyup", resetWaterSpeed)
       clearInterval(moveTimer)
     };
-  }, [shoreDistance,moveSpeed])
+  }, [shoreDistance, moveSpeed, isMinigameActive, canStartMinigame])
 
   const togglePedia = () => {
     setIsPediaOpen(!isPediaOpen);
@@ -85,6 +106,7 @@ function App() {
       <NavBar distance={shoreDistance} togglePedia={togglePedia}></NavBar>
 
       <FishPedia open={isPediaOpen}></FishPedia>
+      <FishingMiniGame active={isMinigameActive}></FishingMiniGame>
       {/*<p>Fish Installed WIndos XP</p>*/}
       <Box flexGrow={1} flexDirection={"column"} height={screenSize} visibility={"hidden"}>
         
