@@ -7,14 +7,23 @@ export default function FishingMiniGame({active}){
     const [pointerProg, setPointerProg] = useState(-6);
     const [isActive, setIsActive] = useState(false);
 
+    const [greenPercent, setGreenPercent] = useState(10);
+
     useEffect(()=>{
-        console.log(pointerProg);
-        
         setIsActive(active)
         
 
         setPointerProg(9000);
 
+        if(!active){
+            if(pointerProg+6 >= 100-greenPercent){
+                console.log("SUCESS");
+                
+            }else{
+                console.log("FAIL");
+                
+            }
+        }
         
         
         
@@ -38,7 +47,7 @@ export default function FishingMiniGame({active}){
         <p>Hi</p>
         <div className={styles.barContainer}>
             <div className={styles.bar}>
-                <div className={styles.green}></div>
+                <div className={styles.green} style={{width: `${greenPercent}%`}}></div>
             </div>
             <PlayArrowIcon sx={{rotate: "-90deg", left: `${pointerProg}%`}} className={styles.pointer}></PlayArrowIcon>
         </div>
