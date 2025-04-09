@@ -28,10 +28,10 @@ public class FishController {
 
 
     //get a random fish by the distance it is called with
-    @PostMapping("/getFishByDistance")
-    public RandomFish getFishByDistance(@RequestBody int distance){
-        return fishService.getFishByDistance(distance);
-    }
+    //@PostMapping("/getFishByDistance")
+    //public RandomFish getFishByDistance(@RequestBody int distance){
+    //    return fishService.getFishByDistance(distance);
+    //}
 
 
 }
