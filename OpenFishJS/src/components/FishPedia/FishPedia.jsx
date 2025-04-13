@@ -30,7 +30,7 @@ export default function FishPedia({open}){
     const [fishList, setFishList] = useState([]);
     
     const getFish = () => {
-        axios.get("/api/fish").then((response) => setFishList(response.data)).catch((error) => console.error(error));
+        axios.get("api/fish/getAll").then((response) => setFishList(response.data)).catch((error) => console.error(error));
     } 
 
     useEffect(()=>{
