@@ -5,6 +5,7 @@ import Water from './components/Water/Water';
 import NavBar from './components/NavBar/NavBar';
 import FishPedia from './components/FishPedia/FishPedia';
 import FishingMiniGame from './components/FishingMiniGame/FishingMiniGame';
+import axios from 'axios';
 
 function App() {
 
@@ -26,6 +27,16 @@ function App() {
   const [isMinigameActive, setIsMinigameActive] = useState(false);
 
   const [canStartMinigame, setCanStartMinigame] = useState(true);
+
+  const [token, setToken] = useState("");
+
+  useEffect(()=>{
+    axios.post("/api/login", {
+      username: "authentication",
+      password: "$2a$12$kr597NN8VCM7YytsfNmLiu2jG496Uh0q3bXaJlInDzuZrpyhJtlD6"
+    }).then((response) => console.log(response))
+    .catch((error)=>console.error(error));
+  }, [])
 
   useEffect(()=>{
     visualViewport.addEventListener("resize", ()=>{
