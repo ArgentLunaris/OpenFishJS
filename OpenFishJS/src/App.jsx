@@ -28,14 +28,28 @@ function App() {
 
   const [canStartMinigame, setCanStartMinigame] = useState(true);
 
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
+  axios.defaults.headers.common.Authorization = token;
+
+  const [properOS, setProperOS] = useState(true);
 
   useEffect(()=>{
     axios.post("/api/login", {
       username: "authentication",
-      password: "$2a$12$kr597NN8VCM7YytsfNmLiu2jG496Uh0q3bXaJlInDzuZrpyhJtlD6"
-    }).then((response) => console.log(response))
+      password: "authenticatedPassword"
+    }).then((response) => {
+      localStorage.setItem("token", response.data)
+      setToken(response.data)
+    })
     .catch((error)=>console.error(error));
+
+    console.log(window.navigator.appVersion);
+    
+
+    if(window.navigator.appVersion.indexOf("iPhone") !== -1 || window.navigator.appVersion.indexOf("And") !== -1){
+      setProperOS(false);
+    }
   }, [])
 
   useEffect(()=>{
@@ -110,27 +124,33 @@ function App() {
   const togglePedia = () => {
     setIsPediaOpen(!isPediaOpen);
   }
-
-  return (
-    <>
-
-      <NavBar distance={shoreDistance} togglePedia={togglePedia}></NavBar>
-
-      <FishPedia open={isPediaOpen}></FishPedia>
-      <FishingMiniGame active={isMinigameActive}></FishingMiniGame>
-      {/*<p>Fish Installed WIndos XP</p>*/}
-      <Box flexGrow={1} flexDirection={"column"} height={screenSize} visibility={"hidden"}>
+  if(properOS){
+    return (
+      <>
+        <NavBar distance={shoreDistance} togglePedia={togglePedia}></NavBar>
         
-      
-      </Box>
-
-      <Water animSpeed={waterSpeed} direction={moveSpeed}>
+        <FishPedia open={isPediaOpen}></FishPedia>
+        <FishingMiniGame active={isMinigameActive}></FishingMiniGame>
+        {/*<p>Fish Installed WIndos XP</p>*/}
+        <Box flexGrow={1} flexDirection={"column"} height={screenSize} visibility={"hidden"}>
+          
         
-      </Water>
-
+        </Box>
+  
+        <Water animSpeed={waterSpeed} direction={moveSpeed}>
+          
+        </Water>
+  
+        
+      </>
+    )
+  }else{
+    return (
+      <p style={{textAlign:"center"}}>This app was not made for mobile devices. Please switch to a computer.</p>
       
-    </>
-  )
+    )
+  }
+  
 }
 
 export default App
