@@ -45,7 +45,6 @@ public class UserController {
 
     @PutMapping("/{id}")
     public String updateUser(@PathVariable int id, @RequestBody UpdateUsers updateUser){
-        System.out.println("controller: "+updateUser);
         userService.updateUser(id, updateUser);
         return "User was updated with these parameters: "+id+"\n"+ updateUser.getUsername()+"\n"+ updateUser.getEmail()+"\n"+ updateUser.getPassword();
     }

@@ -70,7 +70,6 @@ public class UserService {
         throw new RuntimeException("Player not found");
         }
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        System.out.println("service"+updateUsers.toString());
         updateUsers.setPassword(bCryptPasswordEncoder.encode(updateUsers.getPassword()));
 
 

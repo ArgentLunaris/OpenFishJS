@@ -31,7 +31,6 @@ public class FishController {
     //get a random fish by the distance it is called with
     @PostMapping("/getFishByDistance")
     public RandomFish getFishByDistance(@RequestBody FishDistance fishDistance){
-        System.out.println(fishDistance.toString());
         return fishService.getFishByDistance(fishDistance);
     }
 

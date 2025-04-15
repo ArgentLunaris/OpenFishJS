@@ -21,7 +21,6 @@ public class CaughtFishService {
 
     public List<CaughtFishDto> getAllCaughtFish() {
         List<Object[]> results = caughtFishRepository.findAllCaughtFishSimple();
-        System.out.println("We're in the service"+ results);
         return results.stream()
                 .map(obj -> new CaughtFishDto(
                         ((Number) obj[0]).intValue(), //

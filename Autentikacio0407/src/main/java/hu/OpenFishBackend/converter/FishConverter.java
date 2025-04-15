@@ -16,7 +16,6 @@ public class FishConverter {
         float weight = (float) ((Math.random()*(max-min))+min);
         boolean temp = true;
         while(temp) {
-            System.out.println(weight);
             if(weight < max && weight > min){
 
                 randomFish.setWeight(weight);
