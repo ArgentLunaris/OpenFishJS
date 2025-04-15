@@ -5,10 +5,14 @@ import hu.OpenFishBackend.dto.users.UserLogin;
 import hu.OpenFishBackend.dto.users.UserRegister;
 import hu.OpenFishBackend.model.Users;
 import hu.OpenFishBackend.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @RestController
 public class UserController {
@@ -19,7 +23,14 @@ public class UserController {
     //autentikációhoz kellő dolgok
 
     @PostMapping("/register")
-    public Users register(@RequestBody UserRegister user) {
+    public Users register(@RequestBody @Valid UserRegister user) {
+
+        if(user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty()){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "szia, nem lehet üres a felhasználónév sem, a jelszó sem és az email sem!");
+        }else if(!Pattern.matches("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}", user.getEmail())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "nem jó az email regex! ☺");
+        }
+
         return userService.register(user);
     }
 
