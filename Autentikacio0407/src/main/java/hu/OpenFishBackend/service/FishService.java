@@ -2,6 +2,7 @@ package hu.OpenFishBackend.service;
 
 import hu.OpenFishBackend.Exceptions.FishNotFoundException;
 import hu.OpenFishBackend.converter.FishConverter;
+import hu.OpenFishBackend.dto.fish.FishDistance;
 import hu.OpenFishBackend.dto.fish.RandomFish;
 import hu.OpenFishBackend.model.Fish;
 import hu.OpenFishBackend.repository.FishRepository;
@@ -27,9 +28,9 @@ public class FishService {
         return fishRepository.getFishById(id);
     }
 
-    public RandomFish getFishByDistance(int distance){
-        System.out.println(distance+" is the distance");
-        ArrayList<Fish> fishList = new ArrayList<>(fishRepository.getFishByDistance(distance));
+    public RandomFish getFishByDistance(FishDistance fishDistance){
+        System.out.println(fishDistance.getDistance()+" is the distance");
+        ArrayList<Fish> fishList = new ArrayList<>(fishRepository.getFishByDistance(fishDistance.getDistance()));
         int randomNumber = (int)(Math.random()* fishList.size());
         return fishConverter.convertModelToRandom(fishList.get(randomNumber));
 

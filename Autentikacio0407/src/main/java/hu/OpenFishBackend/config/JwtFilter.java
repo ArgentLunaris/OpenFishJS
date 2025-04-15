@@ -38,6 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if(authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             username = jwtService.extractUserName(token) ;
+            System.out.println("van auth");
         }
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -48,12 +49,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-
-
             }
-
+            System.out.println("volt auth");
         }
-        //2:49:04 környéke
+
         filterChain.doFilter(request, response);
     }
 }

@@ -1,5 +1,6 @@
 package hu.OpenFishBackend.controller;
 
+import hu.OpenFishBackend.dto.fish.FishDistance;
 import hu.OpenFishBackend.dto.fish.RandomFish;
 import hu.OpenFishBackend.model.Fish;
 import hu.OpenFishBackend.service.FishService;
@@ -29,9 +30,8 @@ public class FishController {
 
     //get a random fish by the distance it is called with
     @PostMapping("/getFishByDistance")
-    public RandomFish getFishByDistance(@RequestBody int distance){
-        System.out.println(distance);
-        return fishService.getFishByDistance(distance);
+    public RandomFish getFishByDistance(@RequestBody FishDistance fishDistance){
+        return fishService.getFishByDistance(fishDistance);
     }
 
 

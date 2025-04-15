@@ -23,14 +23,12 @@ public class CaughtFishController {
 
     @GetMapping("/all")
     public List<CaughtFishDto> getAllCaughtFish() {
-        System.out.println("We're in the controller"+caughtFishService.getAllCaughtFish());
         return caughtFishService.getAllCaughtFish();
     }
 
     @PostMapping("/add")
     public ResponseEntity<String> addCaughtFish(@RequestBody CaughtFishDto caughtFishDto) {
         caughtFishService.createCaughtFish(caughtFishDto);
-//        System.out.println("Controller: "+ caughtFishDto.toString());
         return ResponseEntity.ok("Caught fish record added successfully!");
     }
 

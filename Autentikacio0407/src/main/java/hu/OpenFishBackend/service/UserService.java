@@ -33,9 +33,12 @@ public class UserService {
     }
 
     public String verify(Users user) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
-        if(authentication.isAuthenticated()){
+
+
+
+        if(bCryptPasswordEncoder.matches(user.getPassword(), userRepository.findByUsername(user.getUsername()).getPassword())){
             return jwtService.generateToken(user.getUsername());
         }else{
             return "Fail";

@@ -1,4 +1,4 @@
-package hu.OpenFishBackend.dto;
+package hu.OpenFishBackend.dto.fish;
 
 import lombok.Data;
 
