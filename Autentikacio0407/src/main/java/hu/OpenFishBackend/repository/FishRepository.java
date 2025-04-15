@@ -19,7 +19,7 @@ public interface FishRepository extends JpaRepository<Fish, Integer> {
     @Query(value = "SELECT * FROM fish WHERE id = :id", nativeQuery = true)
     Fish getFishById(@Param("id") int id);
 
-    @Query(value = "SELECT * FROM fish WHERE distance BETWEEN my_distance-50 AND my_distance+50", nativeQuery = true)
-    ArrayList<Fish> getFishByDistance(@Param("my_distance") int my_distance);
+    @Query(value = "SELECT * FROM fish WHERE distance BETWEEN :my_distance_min AND :my_distance_max", nativeQuery = true)
+    ArrayList<Fish> getFishByDistance(@Param("my_distance_min") int my_distance_min, @Param("my_distance_max") int my_distance_max);
 
 }
