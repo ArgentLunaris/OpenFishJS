@@ -1,6 +1,8 @@
 package hu.OpenFishBackend.controller;
 
 import hu.OpenFishBackend.dto.users.UpdateUsers;
+import hu.OpenFishBackend.dto.users.UserLogin;
+import hu.OpenFishBackend.dto.users.UserRegister;
 import hu.OpenFishBackend.model.Users;
 import hu.OpenFishBackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,12 @@ public class UserController {
     //autentikációhoz kellő dolgok
 
     @PostMapping("/register")
-    public Users register(@RequestBody Users user) {
+    public Users register(@RequestBody UserRegister user) {
         return userService.register(user);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody Users user) {
+    public String login(@RequestBody UserLogin user) {
         //authentication
         //authenticatedPassword
         return userService.verify(user);

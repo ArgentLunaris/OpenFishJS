@@ -1,7 +1,10 @@
 package hu.OpenFishBackend.service;
 
 import hu.OpenFishBackend.Exceptions.UserNotFoundException;
+import hu.OpenFishBackend.converter.UserConverter;
 import hu.OpenFishBackend.dto.users.UpdateUsers;
+import hu.OpenFishBackend.dto.users.UserLogin;
+import hu.OpenFishBackend.dto.users.UserRegister;
 import hu.OpenFishBackend.model.Users;
 import hu.OpenFishBackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +30,12 @@ public class UserService {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
-    public Users register(Users user){
+    public Users register(UserRegister user){
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        return userRepository.save(UserConverter.convertRegisterToModel(user));
     }
 
-    public String verify(Users user) {
+    public String verify(UserLogin user) {
 //        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
 

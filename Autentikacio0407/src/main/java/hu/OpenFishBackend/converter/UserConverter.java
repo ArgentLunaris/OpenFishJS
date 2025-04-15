@@ -1,6 +1,7 @@
 package hu.OpenFishBackend.converter;
 
 import hu.OpenFishBackend.dto.users.UpdateUsers;
+import hu.OpenFishBackend.dto.users.UserRegister;
 import hu.OpenFishBackend.model.Users;
 
 public class UserConverter {
@@ -22,6 +23,15 @@ public class UserConverter {
         user.setUsername(updateUsers.getUsername());
         user.setEmail(updateUsers.getEmail());
         user.setPassword(updateUsers.getPassword());
+        return user;
+    }
+
+
+    public static Users convertRegisterToModel(UserRegister userRegister){
+        Users user = new Users();
+        user.setUsername(userRegister.getUsername());
+        user.setEmail(userRegister.getEmail());
+        user.setPassword(userRegister.getPassword());
         return user;
     }
 
