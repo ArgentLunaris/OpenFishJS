@@ -1,11 +1,13 @@
 import './App.css';
-import {Box} from '@mui/material';
+import { Box } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Water from './components/Water/Water';
 import NavBar from './components/NavBar/NavBar';
 import FishPedia from './components/FishPedia/FishPedia';
 import FishingMiniGame from './components/FishingMiniGame/FishingMiniGame';
 import axios from 'axios';
+import Login from './components/UserManagement/Login/Login';
+import Register from './components/UserManagement/Register/Register';
 
 function App() {
 
@@ -14,7 +16,7 @@ function App() {
   const baseWaterSpeed = 10;
   const waterSpeedDifference = 5;
 
-  const [screenSize, setScreenSize] = useState(visualViewport.height/viewportHeightDivision);
+  const [screenSize, setScreenSize] = useState(visualViewport.height / viewportHeightDivision);
   const [waterSpeed, setWaterSpeed] = useState(10);
 
   const [shoreDistance, setShoreDistance] = useState(0);
@@ -28,129 +30,155 @@ function App() {
 
   const [canStartMinigame, setCanStartMinigame] = useState(true);
 
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [token, setToken] = useState("");
 
-  axios.defaults.headers.common.Authorization = token;
+
+  //axios.defaults.headers.common.Authorization = token;
 
   const [properOS, setProperOS] = useState(true);
 
-  useEffect(()=>{
-    axios.post("/api/login", {
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false)
+
+  useEffect(() => {
+
+    if (localStorage.getItem("token") == null) {
+      setIsRegisterOpen(true)
+    }
+
+    console.log(localStorage.getItem("token"));
+
+    /*axios.post("/api/login", {
       username: "authentication",
       password: "authenticatedPassword"
     }).then((response) => {
       localStorage.setItem("token", response.data)
       setToken(response.data)
     })
-    .catch((error)=>console.error(error));
+    .catch((error)=>console.error(error));*/
 
     console.log(window.navigator.appVersion);
-    
 
-    if(window.navigator.appVersion.indexOf("iPhone") !== -1 || window.navigator.appVersion.indexOf("And") !== -1){
+
+    if (window.navigator.appVersion.indexOf("iPhone") !== -1 || window.navigator.appVersion.indexOf("And") !== -1) {
       setProperOS(false);
     }
   }, [])
 
-  useEffect(()=>{
-    visualViewport.addEventListener("resize", ()=>{
-      setScreenSize(visualViewport.height/viewportHeightDivision)
+  useEffect(() => {
+    visualViewport.addEventListener("resize", () => {
+      setScreenSize(visualViewport.height / viewportHeightDivision)
     })
   }, [])
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
     moveTimer = setInterval(() => {
-      if(shoreDistance>0 || moveSpeed > 0){
-        setShoreDistance(shoreDistance + moveSpeed) 
+      if (shoreDistance > 0 || moveSpeed > 0) {
+        setShoreDistance(shoreDistance + moveSpeed)
       }
-      
-      
+
+
     }, 333)
 
-    const inputHandler = (event)=>{
-      
-      if(isMinigameActive == false){
-        if(event.key == "ArrowRight"){
-          setWaterSpeed(baseWaterSpeed-waterSpeedDifference);
-          setMoveSpeed(1)
-        }
-        if( event.key == "ArrowLeft"){
-          if(shoreDistance > 0){
-            setWaterSpeed(baseWaterSpeed+waterSpeedDifference)
-            setMoveSpeed(-1)
-          }else{
-            setWaterSpeed(baseWaterSpeed);
-            setMoveSpeed(0);
+    const inputHandler = (event) => {
+      if (!isLoginOpen && !isRegisterOpen) {
+        if (isMinigameActive == false) {
+          if (event.key == "ArrowRight") {
+            setWaterSpeed(baseWaterSpeed - waterSpeedDifference);
+            setMoveSpeed(1)
           }
-          
+          if (event.key == "ArrowLeft") {
+            if (shoreDistance > 0) {
+              setWaterSpeed(baseWaterSpeed + waterSpeedDifference)
+              setMoveSpeed(-1)
+            } else {
+              setWaterSpeed(baseWaterSpeed);
+              setMoveSpeed(0);
+            }
+
+          }
         }
       }
     }
 
-    const resetWaterSpeed = (event)=>{
-      if(event.key == "ArrowRight" || event.key == "ArrowLeft"){
-        setWaterSpeed(baseWaterSpeed);
-        setMoveSpeed(0);
-        
-      }
-      
-      if(event.key == " "){
-        if(canStartMinigame && !isMinigameActive){
-          setIsMinigameActive(true)
-        }else if(isMinigameActive){
-          setIsMinigameActive(false)
-          setCanStartMinigame(false)
-          let looper = setInterval(()=>{
-            setCanStartMinigame(true)
-            clearInterval(looper)
-          }, 2000)
+    const resetWaterSpeed = (event) => {
+      if (!isLoginOpen && !isRegisterOpen) {
+
+
+        if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
+          setWaterSpeed(baseWaterSpeed);
+          setMoveSpeed(0);
+
         }
-        
-    }
+
+        if (event.key == " " && (!isLoginOpen && !isRegisterOpen)) {
+          if (canStartMinigame && !isMinigameActive) {
+            setIsMinigameActive(true)
+          } else if (isMinigameActive) {
+            setIsMinigameActive(false)
+            setCanStartMinigame(false)
+            let looper = setInterval(() => {
+              setCanStartMinigame(true)
+              clearInterval(looper)
+            }, 2000)
+          }
+
+        }
+      }
     }
 
     document.addEventListener("keydown", inputHandler)
 
     document.addEventListener("keyup", resetWaterSpeed)
-    return ()=> {
+    return () => {
       document.removeEventListener("keydown", inputHandler)
       document.removeEventListener("keyup", resetWaterSpeed)
       clearInterval(moveTimer)
     };
-  }, [shoreDistance, moveSpeed, isMinigameActive, canStartMinigame])
+  }, [shoreDistance, moveSpeed, isMinigameActive, canStartMinigame, isLoginOpen, isRegisterOpen])
 
   const togglePedia = () => {
     setIsPediaOpen(!isPediaOpen);
   }
-  if(properOS){
+
+  const switchLR = () => {
+    setIsLoginOpen(!isLoginOpen)
+    setIsRegisterOpen(!isRegisterOpen)
+  }
+
+  if (properOS) {
     return (
       <>
+
+        <Login isOpen={isLoginOpen} setIsOpen={setIsLoginOpen} switchLR={switchLR}></Login>
+        <Register isOpen={isRegisterOpen} setIsOpen={setIsRegisterOpen} switchLR={switchLR}></Register>
+
         <NavBar distance={shoreDistance} togglePedia={togglePedia}></NavBar>
-        
+
         <FishPedia open={isPediaOpen}></FishPedia>
         <FishingMiniGame active={isMinigameActive}></FishingMiniGame>
         {/*<p>Fish Installed WIndos XP</p>*/}
         <Box flexGrow={1} flexDirection={"column"} height={screenSize} visibility={"hidden"}>
-          
-        
+
+
         </Box>
-  
+
         <Water animSpeed={waterSpeed} direction={moveSpeed}>
-          
+
         </Water>
-  
-        
+
+
       </>
     )
-  }else{
+  } else {
     return (
-      <p style={{textAlign:"center"}}>This app was not made for mobile devices. Please switch to a computer.</p>
-      
+      <p style={{ textAlign: "center" }}>This app was not made for mobile devices. Please switch to a computer.</p>
+
     )
   }
-  
+
 }
 
 export default App

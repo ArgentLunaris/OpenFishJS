@@ -1,0 +1,8 @@
+.container{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    width: 30%;
+    padding: 5px;
+}

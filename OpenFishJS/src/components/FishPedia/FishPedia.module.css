@@ -11,6 +11,16 @@
     right: -40%;
 
     transition: right 1s;
+
+    overflow:scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    z-index: 69420;
+}
+
+.container::-webkit-scrollbar{
+    display: none;
 }
 
 .slideOut{
