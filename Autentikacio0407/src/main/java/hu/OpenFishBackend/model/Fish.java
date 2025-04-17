@@ -17,16 +17,18 @@ public class Fish {
     private String species;
     private String description;
     private String rarity;
+    private String wiki;
     private int distance;
     @Column(name="min_weight")
     private float minWeight;
     @Column(name="max_weight")
     private float maxWeight;
 
-    public Fish(int id, String species, String description, String rarity, int distance, float minWeight, float maxWeight) {
+    public Fish(int id, String species, String description, String wiki, String rarity, int distance, float minWeight, float maxWeight) {
         this.id = id;
         this.species = species;
         this.description = description;
+        this.wiki = wiki;
         this.rarity = rarity;
         this.distance = distance;
         this.minWeight = minWeight;
@@ -89,12 +91,21 @@ public class Fish {
         this.maxWeight = maxWeight;
     }
 
+    public String getWiki() {
+        return wiki;
+    }
+
+    public void setWiki(String wiki) {
+        this.wiki = wiki;
+    }
+
     @Override
     public String toString() {
         return "Fish{" +
                 "id=" + id +
                 ", species='" + species + '\'' +
                 ", desc='" + description + '\'' +
+                ", wiki='" + wiki + '\'' +
                 ", rarity='" + rarity + '\'' +
                 ", distance=" + distance +
                 ", minWeight=" + minWeight +

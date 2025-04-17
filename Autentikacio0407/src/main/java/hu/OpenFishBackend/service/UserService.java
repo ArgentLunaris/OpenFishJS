@@ -1,6 +1,8 @@
 package hu.OpenFishBackend.service;
 
+import hu.OpenFishBackend.Exceptions.EmailAlreadyExists;
 import hu.OpenFishBackend.Exceptions.UserNotFoundException;
+import hu.OpenFishBackend.Exceptions.UsernameAlreadyExists;
 import hu.OpenFishBackend.converter.UserConverter;
 import hu.OpenFishBackend.dto.users.UpdateUsers;
 import hu.OpenFishBackend.dto.users.UserLogin;
@@ -8,11 +10,13 @@ import hu.OpenFishBackend.dto.users.UserRegister;
 import hu.OpenFishBackend.model.Users;
 import hu.OpenFishBackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -85,4 +89,16 @@ public class UserService {
         userRepository.deleteUserById(id);
         return deletingPlayer;
     }
+
+    public String userExistsByUsernameOrEmail(String username, String email) {
+        if(userRepository.getUsersByUsername(username) == 1){
+            throw new UsernameAlreadyExists("User with this username already exists"); //ResponseStatusException(HttpStatus.FOUND, );
+        }else if(userRepository.getUsersByEmail(email) == 1){
+            throw new EmailAlreadyExists("User with this email already exists");
+        }
+        return "No user like this exists";
+    }
+
+
+
 }

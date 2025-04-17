@@ -21,6 +21,12 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
     @Query(value = "SELECT * FROM users WHERE id = :id",nativeQuery = true)
     Users getUsersById(@Param("id") int id);
 
+    @Query(value = "SELECT EXISTS(SELECT TRUE FROM users WHERE username = :username)", nativeQuery = true)
+    Long getUsersByUsername(@Param("username") String username);
+
+    @Query(value = "SELECT EXISTS(SELECT TRUE FROM users WHERE email = :email)", nativeQuery = true)
+    Long getUsersByEmail(@Param("email") String email);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE users SET username = :username, email = :email, password = :password WHERE id = :id", nativeQuery = true)
