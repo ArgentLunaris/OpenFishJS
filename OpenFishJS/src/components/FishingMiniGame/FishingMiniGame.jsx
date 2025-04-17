@@ -1,15 +1,41 @@
 import { useEffect, useState } from "react";
 import styles from "./FishingMiniGame.module.css"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import axios from "axios";
 
-export default function FishingMiniGame({ active }) {
+export default function FishingMiniGame({ active, distance }) {
 
     const [pointerProg, setPointerProg] = useState(-6);
     const [isActive, setIsActive] = useState(false);
 
     const [greenPercent, setGreenPercent] = useState(10);
 
+    const [fish, setFish] = useState({}); 
+
     useEffect(() => {
+
+        axios.post("/api/fish/getFishByDistance", { distance: distance }, {headers:{Authorization:"Bearer " + localStorage.getItem("token")}})
+              .then((response) => setFish(response.data))
+              .catch((error) => console.error(error));
+        
+        switch (fish.rarity) {
+            case "common":
+                setGreenPercent(40);
+                break;
+            case "rare":
+                setGreenPercent(20);
+                break;
+            case "epic":
+                setGreenPercent(10);
+                break;
+        
+            default:
+                setGreenPercent(100);
+                console.log(fish.rarity);
+                
+                break;
+        }
+
         setIsActive(active)
 
 
@@ -27,7 +53,7 @@ export default function FishingMiniGame({ active }) {
 
 
 
-    }, [active])
+    }, [active, distance])
 
     useEffect(() => {
         let looper = setInterval(() => {

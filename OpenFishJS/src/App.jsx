@@ -5,7 +5,6 @@ import Water from './components/Water/Water';
 import NavBar from './components/NavBar/NavBar';
 import FishPedia from './components/FishPedia/FishPedia';
 import FishingMiniGame from './components/FishingMiniGame/FishingMiniGame';
-import axios from 'axios';
 import Login from './components/UserManagement/Login/Login';
 import Register from './components/UserManagement/Register/Register';
 
@@ -30,8 +29,6 @@ function App() {
 
   const [canStartMinigame, setCanStartMinigame] = useState(true);
 
-  const [token, setToken] = useState("");
-
 
   //axios.defaults.headers.common.Authorization = token;
 
@@ -45,19 +42,6 @@ function App() {
     if (localStorage.getItem("token") == null) {
       setIsRegisterOpen(true)
     }
-
-    console.log(localStorage.getItem("token"));
-
-    /*axios.post("/api/login", {
-      username: "authentication",
-      password: "authenticatedPassword"
-    }).then((response) => {
-      localStorage.setItem("token", response.data)
-      setToken(response.data)
-    })
-    .catch((error)=>console.error(error));*/
-
-    console.log(window.navigator.appVersion);
 
 
     if (window.navigator.appVersion.indexOf("iPhone") !== -1 || window.navigator.appVersion.indexOf("And") !== -1) {
@@ -116,6 +100,9 @@ function App() {
         if (event.key == " " && (!isLoginOpen && !isRegisterOpen)) {
           if (canStartMinigame && !isMinigameActive) {
             setIsMinigameActive(true)
+
+            
+
           } else if (isMinigameActive) {
             setIsMinigameActive(false)
             setCanStartMinigame(false)
@@ -158,7 +145,7 @@ function App() {
         <NavBar distance={shoreDistance} togglePedia={togglePedia}></NavBar>
 
         <FishPedia open={isPediaOpen}></FishPedia>
-        <FishingMiniGame active={isMinigameActive}></FishingMiniGame>
+        <FishingMiniGame active={isMinigameActive} distance={shoreDistance}></FishingMiniGame>
         {/*<p>Fish Installed WIndos XP</p>*/}
         <Box flexGrow={1} flexDirection={"column"} height={screenSize} visibility={"hidden"}>
 

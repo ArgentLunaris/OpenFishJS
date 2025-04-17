@@ -49,10 +49,6 @@ export default function FishPedia({ open }) {
   }, [open])
 
   useEffect(() => {
-    console.log(fishList);
-  }, [fishList])
-
-  useEffect(() => {
     setCurrentAnim((open) ? styles.slideIn : styles.slideOut);
 
 
@@ -60,7 +56,6 @@ export default function FishPedia({ open }) {
 
   return <div className={`${styles.container} ${currentAnim}`}>
     {fishList.map((f, key) => {
-      console.log(f);
       
       return <CustomAccordion key={key} expanded={expanded === `panel${key}`} onChange={handleChange(`panel${key}`)} >
         <AccordionSummary
