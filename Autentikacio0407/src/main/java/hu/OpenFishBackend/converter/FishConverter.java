@@ -9,6 +9,7 @@ public class FishConverter {
 
     public RandomFish convertModelToRandom(Fish fish){
         RandomFish randomFish = new RandomFish();
+        randomFish.setId(fish.getId());
         randomFish.setSpecies(fish.getSpecies());
         randomFish.setRarity(fish.getRarity());
         float min = fish.getMinWeight();

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class RandomFish {
+    private int id;
     private String species;
     private String rarity;
 

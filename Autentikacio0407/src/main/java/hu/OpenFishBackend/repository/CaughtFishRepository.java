@@ -1,5 +1,6 @@
 package hu.OpenFishBackend.repository;
 
+import hu.OpenFishBackend.dto.caughtfish.CaughtFishDto;
 import hu.OpenFishBackend.model.CaughtFish;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,6 +15,24 @@ public interface CaughtFishRepository extends JpaRepository<CaughtFish, Integer>
 
     @Query(value = "SELECT cf.user_id, cf.fish_id, cf.amount FROM caughtfish cf", nativeQuery = true)
     List<Object[]> findAllCaughtFishSimple();
+
+
+
+
+
+    @Query(value = "SELECT EXISTS(SELECT * FROM caughtfish WHERE user_id = :user_id)", nativeQuery = true)
+    Long findAllByUserId(@Param("user_id") Integer userId);
+
+    @Query(value = "SELECT * FROM caughtfish WHERE user_id = :user_id", nativeQuery = true)
+    List<CaughtFishDto> findAllForAUser(@Param("user_id") Integer userId);
+
+    @Query(value = "SELECT * FROM caughtfish WHERE fish_id = :fish_id", nativeQuery = true)
+    List<CaughtFishDto> findAllByFishId(@Param("fish_id") Integer fishId);
+
+
+
+
+
 
     @Modifying
     @Transactional

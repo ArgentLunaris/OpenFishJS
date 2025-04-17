@@ -1,6 +1,7 @@
 package hu.OpenFishBackend.service;
 
 import hu.OpenFishBackend.dto.caughtfish.CaughtFishDto;
+import hu.OpenFishBackend.dto.caughtfish.CaughtFishUserId;
 import hu.OpenFishBackend.repository.CaughtFishRepository;
 import hu.OpenFishBackend.repository.FishRepository;
 import hu.OpenFishBackend.repository.UserRepository;
@@ -54,6 +55,19 @@ public class CaughtFishService {
         caughtFishRepository.insertIntoCaughtFish(caughtFish.getUserId(), caughtFish.getFishId(), caughtFish.getAmount());
 
     }
+
+    public boolean asd(CaughtFishDto caughtFish) {
+        if(caughtFishRepository.findAllByUserId(caughtFish.getFishId()) == 1) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public List<CaughtFishDto> allCaughtFishForId(CaughtFishUserId user){
+        return caughtFishRepository.findAllForAUser(user.getUserId());
+    }
+
 
 
     public void updateCaughtFishAmount(CaughtFishDto request) {
