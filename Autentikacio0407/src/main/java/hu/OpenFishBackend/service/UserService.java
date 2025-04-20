@@ -99,6 +99,9 @@ public class UserService {
         return "No user like this exists";
     }
 
+    public int getUserId(String username, String password){
+        return userRepository.findByUsername(username).getId();
+    }
 
 
 }

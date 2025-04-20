@@ -3,6 +3,7 @@ package hu.OpenFishBackend.controller;
 import hu.OpenFishBackend.dto.users.UpdateUsers;
 import hu.OpenFishBackend.dto.users.UserLogin;
 import hu.OpenFishBackend.dto.users.UserRegister;
+import hu.OpenFishBackend.dto.users.UserResponse;
 import hu.OpenFishBackend.model.Users;
 import hu.OpenFishBackend.service.UserService;
 import jakarta.validation.Valid;
@@ -38,10 +39,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserLogin user) {
+    public UserResponse login(@RequestBody UserLogin user) {
         //authentication
         //authenticatedPassword
-        return userService.verify(user);
+        UserResponse response = new UserResponse();
+        response.setToken(userService.verify(user));
+        response.setUserId(userService.getUserId(user.getUsername(), user.getPassword()));
+        return response;
     }
 
 
