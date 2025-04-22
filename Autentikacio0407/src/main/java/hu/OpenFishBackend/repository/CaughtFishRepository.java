@@ -24,7 +24,9 @@ public interface CaughtFishRepository extends JpaRepository<CaughtFish, Integer>
     Long findAllByUserId(@Param("user_id") Integer userId);
 
     @Query(value = "SELECT * FROM caughtfish WHERE user_id = :user_id", nativeQuery = true)
-    List<CaughtFishDto> findAllForAUser(@Param("user_id") Integer userId);
+    List<CaughtFish> findAllForAUser(@Param("user_id") int userId);
+
+
 
     @Query(value = "SELECT * FROM caughtfish WHERE fish_id = :fish_id", nativeQuery = true)
     List<CaughtFishDto> findAllByFishId(@Param("fish_id") Integer fishId);

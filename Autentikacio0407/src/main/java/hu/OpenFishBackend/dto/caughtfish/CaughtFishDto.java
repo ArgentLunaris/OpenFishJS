@@ -1,10 +1,16 @@
 package hu.OpenFishBackend.dto.caughtfish;
 
+import lombok.Data;
+
+
+@Data
 public class CaughtFishDto {
 
     private int userId;
     private int fishId;
     private int amount;
+
+    public CaughtFishDto() {}
 
     public CaughtFishDto(int userId, int fishId, int amount) {
         this.userId = userId;

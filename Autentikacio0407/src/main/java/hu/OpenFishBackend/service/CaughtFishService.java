@@ -1,13 +1,16 @@
 package hu.OpenFishBackend.service;
 
+import hu.OpenFishBackend.converter.CaughtFishConverter;
 import hu.OpenFishBackend.dto.caughtfish.CaughtFishDto;
 import hu.OpenFishBackend.dto.caughtfish.CaughtFishUserId;
+import hu.OpenFishBackend.model.CaughtFish;
 import hu.OpenFishBackend.repository.CaughtFishRepository;
 import hu.OpenFishBackend.repository.FishRepository;
 import hu.OpenFishBackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,8 @@ public class CaughtFishService {
     private UserRepository userRepository;
     private FishRepository fishRepository;
 
+    @Autowired
+    private CaughtFishConverter caughtFishConverter;
 
     public List<CaughtFishDto> getAllCaughtFish() {
         List<Object[]> results = caughtFishRepository.findAllCaughtFishSimple();
@@ -65,7 +70,13 @@ public class CaughtFishService {
     }
 
     public List<CaughtFishDto> allCaughtFishForId(CaughtFishUserId user){
-        return caughtFishRepository.findAllForAUser(user.getUserId());
+        List<CaughtFish> newList = caughtFishRepository.findAllForAUser(user.getUserId());
+        List<CaughtFishDto> dtoList = new ArrayList<>();
+        for (CaughtFish c : newList) {
+            dtoList.add(caughtFishConverter.caughtFishToDto(c));
+        }
+
+        return dtoList;
     }
 
 
