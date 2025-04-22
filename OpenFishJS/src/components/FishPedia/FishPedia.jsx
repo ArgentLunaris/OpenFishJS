@@ -28,22 +28,26 @@ export default function FishPedia({ open }) {
   }
 
   const [fishList, setFishList] = useState([]);
+  const [knownFish, setKnownFish] = useState([]);
 
 
 
   const getFish = () => {
     //while(localStorage.getItem("token") == null){};
 
-    axios.get("api/fish/getAll", {headers:{Authorization:"Bearer " + localStorage.getItem("token")}})
+    axios.get("api/fish/getAll", { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
       .then((response) => setFishList(response.data))
+      .catch((error) => console.error(error));
+    axios.post("api/caughtfish/getAllForUser", { userId: localStorage.getItem("id") }, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
+      .then((response) => console.log(response))
       .catch((error) => console.error(error));
   }
 
   useEffect(() => {
-    if(open){
+    if (open) {
       getFish();
     }
-    
+
 
 
   }, [open])
@@ -56,7 +60,7 @@ export default function FishPedia({ open }) {
 
   return <div className={`${styles.container} ${currentAnim}`}>
     {fishList.map((f, key) => {
-      
+
       return <CustomAccordion key={key} expanded={expanded === `panel${key}`} onChange={handleChange(`panel${key}`)} >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

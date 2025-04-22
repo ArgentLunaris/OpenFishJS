@@ -43,7 +43,14 @@ export default function FishingMiniGame({ active, distance }) {
 
         if (!active) {
             if (pointerProg + 6 >= 100 - greenPercent) {
-                console.log("SUCESS");
+                
+                axios.post("api/caughtfish/addupdate", { 
+                    userId: localStorage.getItem("id"),
+                    fishId: fish.id,
+                    amount: 1
+                 }, {headers:{Authorization:"Bearer " + localStorage.getItem("token")}})
+                 .then((response) => console.log(response))
+                 .catch((error)=> console.error(error))
 
             } else {
                 console.log("FAIL");

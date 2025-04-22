@@ -23,8 +23,15 @@ export default function Login({ isOpen, setIsOpen, switchLR }) {
             password: formInput.password
         })
             .then((response) => {
-                localStorage.setItem("token", response.data)
-                setIsOpen(false)
+                if(response.data.token != "Fail"){
+                    localStorage.setItem("token", response.data.token)
+                    localStorage.setItem("id", response.data.userId)
+                    setIsOpen(false)
+                }else{
+                    setErrorMessage("Incorrect username or password")
+                }
+                
+                
             })
             .catch((error) => console.error(error))
 
