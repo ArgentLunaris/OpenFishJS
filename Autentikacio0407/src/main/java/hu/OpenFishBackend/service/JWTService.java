@@ -39,7 +39,9 @@ public class JWTService {
 
         Map<String, Object> claims = new HashMap<String, Object>();
 
-        return Jwts.builder().claims().add(claims).subject(username).issuedAt(new Date(System.currentTimeMillis())).expiration(new Date(System.currentTimeMillis() + 60000 *30)).and().signWith(getKey()).compact();
+        return Jwts.builder().claims().add(claims).subject(username)
+                .issuedAt(new Date(System.currentTimeMillis())).expiration(
+                        new Date(System.currentTimeMillis() + 60000L * 24 * 60 * 30)).and().signWith(getKey()).compact();
 
 
     }

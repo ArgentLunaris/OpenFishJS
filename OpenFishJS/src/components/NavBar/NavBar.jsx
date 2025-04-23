@@ -1,4 +1,5 @@
 import { AppBar, Box, Button, createTheme, ThemeProvider, Toolbar, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function NavBar({ distance, togglePedia }) {
 
@@ -11,6 +12,12 @@ export default function NavBar({ distance, togglePedia }) {
     const logOut = () => {
         localStorage.clear();
         window.location.reload(false)
+    }
+
+    const navigate = useNavigate();
+
+    const navToUsers = () =>{
+        navigate("/users")
     }
 
     return <AppBar position='static' sx={{
@@ -36,7 +43,7 @@ export default function NavBar({ distance, togglePedia }) {
                 </Box>
 
 
-                <Button color='white' variant='text' sx={{ textTransform: 'capitalize', fontSize: 'large' }}>Users</Button>
+                <Button color='white' variant='text' sx={{ textTransform: 'capitalize', fontSize: 'large' }} onClick={navToUsers}>Users</Button>
                 <Button color='white' variant='text' sx={{ textTransform: 'capitalize', fontSize: 'large' }}>Account</Button>
                 <Button color='white' variant='text' sx={{ textTransform: 'capitalize', fontSize: 'large' }} onClick={logOut}>Log Out</Button>
             </Toolbar>

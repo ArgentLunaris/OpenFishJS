@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Typography, Link } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from "axios";
 import styles from "./FishPedia.module.css";
 
 import { styled } from '@mui/material/styles';
+import KnownFishContext from "../Contexts/KnownFishContext";
 
 export default function FishPedia({ open }) {
 
@@ -28,7 +29,7 @@ export default function FishPedia({ open }) {
   }
 
   const [fishList, setFishList] = useState([]);
-  const [knownFish, setKnownFish] = useState([]);
+  const [knownFish, setKnownFish] = useContext(KnownFishContext);
 
 
 
@@ -38,12 +39,11 @@ export default function FishPedia({ open }) {
     axios.get("api/fish/getAll", { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
       .then((response) => setFishList(response.data))
       .catch((error) => console.error(error));
-    axios.post("api/caughtfish/getAllForUser", { userId: localStorage.getItem("id") }, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
-      .then((response) => console.log(response))
-      .catch((error) => console.error(error));
+    
   }
 
   useEffect(() => {
+    
     if (open) {
       getFish();
     }
@@ -61,7 +61,8 @@ export default function FishPedia({ open }) {
   return <div className={`${styles.container} ${currentAnim}`}>
     {fishList.map((f, key) => {
 
-      return <CustomAccordion key={key} expanded={expanded === `panel${key}`} onChange={handleChange(`panel${key}`)} >
+      if(knownFish.includes(f.id)){
+        return <CustomAccordion key={key} expanded={expanded === `panel${key}`} onChange={handleChange(`panel${key}`)} >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls={`panel${key}bh-content`}
@@ -84,6 +85,25 @@ export default function FishPedia({ open }) {
           </Typography>
         </AccordionDetails>
       </CustomAccordion>
+      }else{
+        return <CustomAccordion key={key} expanded={false}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls={`panel${key}bh-content`}
+          id={`panel${key}bh-header`}
+        >
+          <Typography component="span" sx={{ width: '33%', flexShrink: 0 }} fontFamily={"Itim"}>
+            ???
+          </Typography>
+          <Typography component="span" variant="text.secondary" sx={{ width: '33%', flexShrink: 0 }} fontFamily={"Itim"}>
+            Rarity: ???
+          </Typography>
+        </AccordionSummary>
+      </CustomAccordion>
+      }
+      
+
+      
     })}
   </div>
 

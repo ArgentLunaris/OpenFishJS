@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./FishingMiniGame.module.css"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import axios from "axios";
+import KnownFishContext from "../Contexts/KnownFishContext";
 
 export default function FishingMiniGame({ active, distance }) {
 
@@ -10,30 +11,35 @@ export default function FishingMiniGame({ active, distance }) {
 
     const [greenPercent, setGreenPercent] = useState(10);
 
-    const [fish, setFish] = useState({}); 
+    const [fish, setFish] = useState({});
+
+    const [knownFish, setKnownFish] = useContext(KnownFishContext);
 
     useEffect(() => {
 
-        axios.post("/api/fish/getFishByDistance", { distance: distance }, {headers:{Authorization:"Bearer " + localStorage.getItem("token")}})
-              .then((response) => setFish(response.data))
-              .catch((error) => console.error(error));
-        
-        switch (fish.rarity) {
-            case "common":
-                setGreenPercent(40);
-                break;
-            case "rare":
-                setGreenPercent(20);
-                break;
-            case "epic":
-                setGreenPercent(10);
-                break;
-        
-            default:
-                setGreenPercent(100);
-                console.log(fish.rarity);
-                
-                break;
+        if (localStorage.getItem("token") != null) {
+
+            axios.post("/api/fish/getFishByDistance", { distance: distance }, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
+                .then((response) => setFish(response.data))
+                .catch((error) => console.error(error));
+
+            switch (fish.rarity) {
+                case "common":
+                    setGreenPercent(40);
+                    break;
+                case "rare":
+                    setGreenPercent(20);
+                    break;
+                case "epic":
+                    setGreenPercent(10);
+                    break;
+
+                default:
+                    setGreenPercent(100);
+                    console.log(fish.rarity);
+
+                    break;
+            }
         }
 
         setIsActive(active)
@@ -43,17 +49,18 @@ export default function FishingMiniGame({ active, distance }) {
 
         if (!active) {
             if (pointerProg + 6 >= 100 - greenPercent) {
-                
-                axios.post("api/caughtfish/addupdate", { 
+
+                axios.post("api/caughtfish/addupdate", {
                     userId: localStorage.getItem("id"),
                     fishId: fish.id,
                     amount: 1
-                 }, {headers:{Authorization:"Bearer " + localStorage.getItem("token")}})
-                 .then((response) => console.log(response))
-                 .catch((error)=> console.error(error))
+                }, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
+                    .then((response) => console.log(response))
+                    .catch((error) => console.error(error))
+
+                setKnownFish(knownFish.concat(fish.id));
 
             } else {
-                console.log("FAIL");
 
             }
         }
@@ -61,6 +68,8 @@ export default function FishingMiniGame({ active, distance }) {
 
 
     }, [active, distance])
+
+
 
     useEffect(() => {
         let looper = setInterval(() => {

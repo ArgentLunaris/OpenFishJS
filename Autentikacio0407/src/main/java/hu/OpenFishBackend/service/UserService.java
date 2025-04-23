@@ -7,6 +7,7 @@ import hu.OpenFishBackend.converter.UserConverter;
 import hu.OpenFishBackend.dto.users.UpdateUsers;
 import hu.OpenFishBackend.dto.users.UserLogin;
 import hu.OpenFishBackend.dto.users.UserRegister;
+import hu.OpenFishBackend.model.UserPrincipal;
 import hu.OpenFishBackend.model.Users;
 import hu.OpenFishBackend.repository.UserRepository;
 import io.jsonwebtoken.JwtException;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -108,10 +110,10 @@ public class UserService {
     }
 
 
-    public boolean checkToken(String token, String user) {
+    public boolean checkToken(String token, Integer userId) {
 
         try{
-            return jwtService.validateToken(token, userDetailsService.loadUserByUsername(user));
+            return jwtService.validateToken(token, new UserPrincipal(userRepository.getReferenceById(userId)));
         }catch (Exception e){
             return false;
         }

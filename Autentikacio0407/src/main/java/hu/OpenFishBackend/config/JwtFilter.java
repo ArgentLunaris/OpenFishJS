@@ -14,23 +14,46 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Autowired
     private JWTService jwtService;
 
-    @Autowired
     private UserDetailsService userDetailsService;
 
+    private RequestMatcher requestMatcher;
+
+    public JwtFilter(JWTService jwtService, UserDetailsService userDetailsService, String[] openEndpoints) {
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
+        this.requestMatcher = new OrRequestMatcher(
+                Arrays.stream(openEndpoints)
+                        .map(AntPathRequestMatcher::new)
+                        .collect(Collectors.toList())
+        );
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        System.out.printf("%s: %s\n", request.getRequestURI(), requestMatcher.matches(request));
+
+        if(requestMatcher.matches(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         String token = null;
@@ -38,7 +61,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-            username = jwtService.extractUserName(token) ;
+            username = jwtService.extractUserName(token);
         }
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

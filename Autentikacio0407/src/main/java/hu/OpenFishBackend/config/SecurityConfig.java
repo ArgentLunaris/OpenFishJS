@@ -73,16 +73,8 @@ public class SecurityConfig {
 //    }
 
 
-    private String[] openEndpoints = new String[]{
-            "/",
-            "/register",
-            "/login",
-            "/h2-console/**",
-            "/swagger-ui/**",
-            "/v2/api-docs",
-            "/v3/api-docs/**",
-            "/checktoken"
-    };
+    @Autowired
+    private String[] openEndpoints;
 
 
 

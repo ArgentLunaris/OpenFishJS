@@ -49,8 +49,8 @@ public class UserController {
     }
 
     @PostMapping("/checkToken")
-    public boolean checkToken(@RequestHeader(name = "Authorization") String token,@RequestBody String user) {
-        return userService.checkToken(token.substring(7), user);
+    public boolean checkToken(@RequestHeader(name = "Authorization") String token,@RequestBody Integer userId) {
+        return userService.checkToken(token.substring(7), userId);
     }
 
 

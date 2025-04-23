@@ -35,17 +35,19 @@ export default function Register({ isOpen, setIsOpen, switchLR }) {
                         password: formInput.password
                     })
                         .then((response) => {
-                            localStorage.setItem("token", response.data)
+                            localStorage.setItem("token", response.data.token)
+                            localStorage.setItem("id", response.data.userId)
                             setIsOpen(false)
+                            window.location.reload(false)
                         })
                         .catch((error) => console.error(error))
-                    
+
                 }).catch((error) => console.error(error))
 
             } else {
                 setErrorMessage("The two passwords do not match!")
             }
-        }else{
+        } else {
             setErrorMessage("Invalid Email!")
         }
 

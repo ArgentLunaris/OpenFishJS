@@ -1,0 +1,15 @@
+.users-body{
+    background-image: linear-gradient(rgb(70, 70, 255), rgb(176, 255, 255) 50%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+}
+
+.game-body{
+    background-image: linear-gradient(rgb(70, 70, 255), rgb(176, 255, 255) 50%);
+    background-repeat: no-repeat;
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+    margin: 0;
+  }
