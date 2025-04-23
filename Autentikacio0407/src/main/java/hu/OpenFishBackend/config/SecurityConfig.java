@@ -80,7 +80,8 @@ public class SecurityConfig {
             "/h2-console/**",
             "/swagger-ui/**",
             "/v2/api-docs",
-            "/v3/api-docs/**"
+            "/v3/api-docs/**",
+            "/checktoken"
     };
 
 

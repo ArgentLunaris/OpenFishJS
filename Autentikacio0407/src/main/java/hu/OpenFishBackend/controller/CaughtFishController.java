@@ -18,6 +18,7 @@ public class CaughtFishController {
 
     @Autowired
     private CaughtFishService caughtFishService;
+    
 
 //    @GetMapping
 //    public List<CaughtFishItem> getPlayers(){return caughtFishService.getAllCaughtFish();}

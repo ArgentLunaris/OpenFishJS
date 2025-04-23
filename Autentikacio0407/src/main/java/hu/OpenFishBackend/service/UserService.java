@@ -9,11 +9,13 @@ import hu.OpenFishBackend.dto.users.UserLogin;
 import hu.OpenFishBackend.dto.users.UserRegister;
 import hu.OpenFishBackend.model.Users;
 import hu.OpenFishBackend.repository.UserRepository;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,6 +33,8 @@ public class UserService {
 
     @Autowired
     private JWTService jwtService;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
@@ -104,4 +108,13 @@ public class UserService {
     }
 
 
+    public boolean checkToken(String token, String user) {
+
+        try{
+            return jwtService.validateToken(token, userDetailsService.loadUserByUsername(user));
+        }catch (Exception e){
+            return false;
+        }
+
+    }
 }

@@ -19,11 +19,15 @@ public class CaughtFishService {
 
     @Autowired
     private CaughtFishRepository caughtFishRepository;
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private FishRepository fishRepository;
 
     @Autowired
     private CaughtFishConverter caughtFishConverter;
+
+
 
     public List<CaughtFishDto> getAllCaughtFish() {
         List<Object[]> results = caughtFishRepository.findAllCaughtFishSimple();

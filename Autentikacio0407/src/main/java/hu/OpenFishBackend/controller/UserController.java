@@ -48,6 +48,11 @@ public class UserController {
         return response;
     }
 
+    @PostMapping("/checkToken")
+    public boolean checkToken(@RequestHeader(name = "Authorization") String token,@RequestBody String user) {
+        return userService.checkToken(token.substring(7), user);
+    }
+
 
     //többi végpont
     @GetMapping("/listPlayers")
