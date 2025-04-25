@@ -4,7 +4,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import axios from "axios";
 import KnownFishContext from "../Contexts/KnownFishContext";
 
-export default function FishingMiniGame({ active, distance }) {
+export default function FishingMiniGame({ active, distance, setPoints, done }) {
 
     const [pointerProg, setPointerProg] = useState(-6);
     const [isActive, setIsActive] = useState(false);
@@ -15,60 +15,115 @@ export default function FishingMiniGame({ active, distance }) {
 
     const [knownFish, setKnownFish] = useContext(KnownFishContext);
 
+    const [name, setName] = useState("");
+
+    const [isNewFish, setIsNewFish] = useState(false);
+    const [isCaught, setIsCaught] = useState(false);
+    const [imDone, setImDone] = useState(false);
+
     useEffect(() => {
 
-        if (localStorage.getItem("token") != null) {
+        //this shit right here is why i'll never become a web developer even if my life depends on it
+        //i swear to god this is the most unintuitive language i ever had the displeasure of working with, and i had classes for dart + flutter
+        //i'm actually starting to prefer its parenthesis and comma hell compared to whatever in the name of all that is holy this is
+        //to whoever has to read and grade all this, i am sorry you have to read this abomination of a useEffect, i tried to make this look normal, but the React devs looked down at my efforts and decided to spit in my face
 
-            axios.post("/api/fish/getFishByDistance", { distance: distance }, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
-                .then((response) => setFish(response.data))
-                .catch((error) => console.error(error));
+        const shit = async () => {
 
-            switch (fish.rarity) {
-                case "common":
-                    setGreenPercent(40);
-                    break;
-                case "rare":
-                    setGreenPercent(20);
-                    break;
-                case "epic":
-                    setGreenPercent(10);
-                    break;
+            if (!done) {
+                setImDone(false);  
 
-                default:
-                    setGreenPercent(100);
-                    console.log(fish.rarity);
+                
+                
 
-                    break;
+                if (localStorage.getItem("token") != null) {
+                    if (active) {
+
+                        let fuckThisFuckingLanguage = {}
+                        await axios.post("/api/fish/getFishByDistance", { distance: distance }, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
+                            .then((response) => {
+                                setFish(response.data)
+                                fuckThisFuckingLanguage = response.data
+                                console.log(response.data);
+
+
+                                if (knownFish.includes(fuckThisFuckingLanguage.id)) {
+                                    setName(fuckThisFuckingLanguage.species);
+                                } else {
+                                    setName("???")
+                                }
+                                //console.log(response);
+
+                            })
+                            .catch((error) => console.error(error));
+
+                        // console.log(fuckThisFuckingLanguage);
+
+
+
+                        switch (fuckThisFuckingLanguage.rarity) {
+                            case "common":
+                                setGreenPercent(40);
+                                break;
+                            case "rare":
+                                setGreenPercent(20);
+                                break;
+                            case "epic":
+                                setGreenPercent(10);
+                                break;
+
+                            default:
+                                setGreenPercent(100);
+                                console.log(fuckThisFuckingLanguage.rarity);
+
+                                break;
+                        }
+                    }
+
+                }
+
+                
+            } else if(active) {
+                if (pointerProg + 6 >= 100 - greenPercent) {
+
+                    axios.post("api/caughtfish/addupdate", {
+                        userId: localStorage.getItem("id"),
+                        fishId: fish.id,
+                        weight: fish.weight
+                    }, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
+                        .then((response) => {
+                            setPoints()
+                            console.log(response);
+                            setImDone(true);
+                            setIsCaught(true)
+
+                        })
+                        .catch((error) => console.error(error))
+
+
+                    if (!knownFish.includes(fish.id)) {
+                        setKnownFish(knownFish.concat(fish.id));
+                        setIsNewFish(true)
+                    } else {
+                        setIsNewFish(false)
+                    }
+
+                } else {
+                    setIsCaught(false);
+                }
             }
+
+            setIsActive(active)
+
+
+            setPointerProg(9000);
+
+
         }
 
-        setIsActive(active)
+        shit();
 
-
-        setPointerProg(9000);
-
-        if (!active) {
-            if (pointerProg + 6 >= 100 - greenPercent) {
-
-                axios.post("api/caughtfish/addupdate", {
-                    userId: localStorage.getItem("id"),
-                    fishId: fish.id,
-                    amount: 1
-                }, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
-                    .then((response) => console.log(response))
-                    .catch((error) => console.error(error))
-
-                setKnownFish(knownFish.concat(fish.id));
-
-            } else {
-
-            }
-        }
-
-
-
-    }, [active, distance])
-
+    }, [active, distance, done])
 
 
     useEffect(() => {
@@ -86,14 +141,33 @@ export default function FishingMiniGame({ active, distance }) {
     if (!isActive) return null;
 
     return <div className={styles.container} sx={{ visibility: `${(isActive) ? "visible" : "hidden"}` }}>
-        <p>Hi</p>
-        <div className={styles.barContainer}>
-            <div className={styles.bar}>
-                <div className={styles.green} style={{ width: `${greenPercent}%` }}></div>
-            </div>
-            <PlayArrowIcon sx={{ rotate: "-90deg", left: `${pointerProg}%` }} className={styles.pointer}></PlayArrowIcon>
-        </div>
+
+        {imDone
+            ? isCaught
+                ?
+                <>
+                    <h2>Caught!</h2>
+                    <h5>{isNewFish ? "New!" : ""}</h5>
+                    <h4>{fish.species} ({fish.weight} kg)</h4>
+                    <p>{Number(fish.weight * 10).toFixed(0)} points</p>
+                </>
+                : <>
+                    <h3>Aw dang it!</h3>
+                    <h3>It got away!</h3>
+                </>
+            : <>
+                <p>{name}</p>
+                <div className={styles.barContainer}>
+                    <div className={styles.bar}>
+                        <div className={styles.green} style={{ width: `${greenPercent}%` }}></div>
+                    </div>
+                    <PlayArrowIcon sx={{ rotate: "-90deg", left: `${pointerProg}%` }} className={styles.pointer}></PlayArrowIcon>
+                </div>
+            </>
+        }
 
 
-    </div>
+
+
+    </div >
 }

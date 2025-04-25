@@ -28,6 +28,7 @@ function Game() {
   const [isPediaOpen, setIsPediaOpen] = useState(false);
 
   const [isMinigameActive, setIsMinigameActive] = useState(false);
+  const [doneMinigame, setDoneMinigame] = useState(false);
 
   const [canStartMinigame, setCanStartMinigame] = useState(true);
 
@@ -40,6 +41,8 @@ function Game() {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
 
   const [knownFish, setKnownFish] = useState([]);
+
+  const [points, setPoints] = useState(0);
 
   useEffect(() => {
 
@@ -54,6 +57,8 @@ function Game() {
           if (!response.data) {
             localStorage.clear();
             window.location.reload(false)
+          }else{
+            getPoints()
           }
 
         })
@@ -118,16 +123,18 @@ function Game() {
           if (canStartMinigame && !isMinigameActive) {
 
             setIsMinigameActive(true)
+            setDoneMinigame(false)
 
 
 
-          } else if (isMinigameActive) {
-            setIsMinigameActive(false)
+          } else if (isMinigameActive && !doneMinigame) {
             setCanStartMinigame(false)
+            setDoneMinigame(true)
             let looper = setInterval(() => {
+              setIsMinigameActive(false)
               setCanStartMinigame(true)
               clearInterval(looper)
-            }, 2000)
+            }, 5000)
           }
 
         }
@@ -142,7 +149,7 @@ function Game() {
       document.removeEventListener("keyup", resetWaterSpeed)
       clearInterval(moveTimer)
     };
-  }, [shoreDistance, moveSpeed, isMinigameActive, canStartMinigame, isLoginOpen, isRegisterOpen])
+  }, [shoreDistance, moveSpeed, isMinigameActive, canStartMinigame, isLoginOpen, isRegisterOpen, doneMinigame])
 
   const togglePedia = () => {
     setIsPediaOpen(!isPediaOpen);
@@ -163,6 +170,8 @@ function Game() {
           temp.push(f.fishId)
         })
         setKnownFish(temp);
+        console.log(temp);
+        
 
 
       })
@@ -181,6 +190,14 @@ function Game() {
     return ()=>{document.body.classList.remove("game-body")}
   },[])
 
+  const getPoints = () => {
+    axios.post("api/getPointsById",  { id: localStorage.getItem("id") }, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
+    .then((response) => setPoints(response.data))
+    .catch((error) => console.error(error));
+  }
+
+  
+
   if (!properOS) {
     return (
       <p style={{ textAlign: "center" }}>This app was not made for mobile devices. Please switch to a computer.</p>
@@ -191,14 +208,14 @@ function Game() {
   return (
     <>
 
-      <Login isOpen={isLoginOpen} setIsOpen={setIsLoginOpen} switchLR={switchLR}></Login>
-      <Register isOpen={isRegisterOpen} setIsOpen={setIsRegisterOpen} switchLR={switchLR}></Register>
+      <Login isOpen={isLoginOpen} setIsOpen={setIsLoginOpen} switchLR={switchLR} setPoints={getPoints}></Login>
+      <Register isOpen={isRegisterOpen} setIsOpen={setIsRegisterOpen} switchLR={switchLR} setPoints={getPoints}></Register>
 
-      <NavBar distance={shoreDistance} togglePedia={togglePedia}></NavBar>
+      <NavBar distance={shoreDistance} togglePedia={togglePedia} points={points}></NavBar>
 
       <KnownFishContext.Provider value={[knownFish, setKnownFish]}>
         <FishPedia open={isPediaOpen}></FishPedia>
-        <FishingMiniGame active={isMinigameActive} distance={shoreDistance}></FishingMiniGame>
+        <FishingMiniGame active={isMinigameActive} distance={shoreDistance} setPoints={getPoints} done={doneMinigame}></FishingMiniGame>
       </KnownFishContext.Provider>
       {/*<p>Fish Installed WIndos XP</p>*/}
       <Box flexGrow={1} flexDirection={"column"} height={screenSize} visibility={"hidden"}>

@@ -29,6 +29,8 @@ public class CaughtFishService {
     @Autowired
     private CaughtFishConverter caughtFishConverter;
 
+    private final int SCORE_MULT = 10;
+
 
 
     public List<CaughtFishDto> getAllCaughtFish() {
@@ -63,9 +65,9 @@ public class CaughtFishService {
 //        System.out.println("Service: "+ caughtFish.toString());
 
         // Use the native query to insert into the database
-        caughtFishRepository.insertIntoCaughtFish(caughtFish.getUserId(), caughtFish.getFishId(), caughtFishRepository.getCaughtFishByBothIds(caughtFish.getUserId(), caughtFish.getFishId()).getAmount()+1);
+        caughtFishRepository.insertIntoCaughtFish(caughtFish.getUserId(), caughtFish.getFishId(), 1);
 
-        userRepository.updatePointsById(caughtFish.getUserId(), (int) (caughtFish.getWeight()*100));
+        userRepository.updatePointsById(caughtFish.getUserId(), (int) (userRepository.getPointsById(caughtFish.getUserId()) + caughtFish.getWeight()*SCORE_MULT));
 
     }
 
@@ -116,7 +118,7 @@ public class CaughtFishService {
                 caughtFishRepository.getCaughtFishByBothIds(request.getUserId(), request.getFishId()).getAmount()+1
         );
 
-        userRepository.updatePointsById(request.getUserId(), (int) (userRepository.getPointsById(request.getUserId()) + request.getWeight()*100));
+        userRepository.updatePointsById(request.getUserId(), (int) (userRepository.getPointsById(request.getUserId()) + request.getWeight()*SCORE_MULT));
 
 
 

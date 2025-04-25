@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, createTheme, ThemeProvider, Toolbar, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-export default function NavBar({ distance, togglePedia }) {
+export default function NavBar({ distance, togglePedia, points }) {
 
     const theme = createTheme({
         typography: {
@@ -33,7 +33,7 @@ export default function NavBar({ distance, togglePedia }) {
                     position: 'relative',
                     left: '10%',
                     fontSize: 'large'
-                }}>0 points</Typography>
+                }}>{points} points</Typography>
 
                 <Box flexGrow={1} sx={{
                     display: 'flex',

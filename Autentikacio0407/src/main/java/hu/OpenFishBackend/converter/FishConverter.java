@@ -4,6 +4,9 @@ import hu.OpenFishBackend.dto.fish.RandomFish;
 import hu.OpenFishBackend.model.Fish;
 import org.springframework.stereotype.Component;
 
+import java.text.DecimalFormat;
+import java.util.Random;
+
 @Component
 public class FishConverter {
 
@@ -14,7 +17,7 @@ public class FishConverter {
         randomFish.setRarity(fish.getRarity());
         float min = fish.getMinWeight();
         float max = fish.getMaxWeight();
-        float weight = (float) ((Math.random()*(max-min))+min);
+        float weight = randomWeight(min, max);
         boolean temp = true;
         while(temp) {
             if(weight < max && weight > min){
@@ -22,9 +25,15 @@ public class FishConverter {
                 randomFish.setWeight(weight);
                 temp = false;
             }
-            weight = (float) (((Math.random()*(max-min))+min));
+            weight = randomWeight(min, max);
         }
         return randomFish;
+    }
+
+    private float randomWeight(float min, float max){
+        Random r = new Random();
+        DecimalFormat df = new DecimalFormat("#.##");
+        return Float.parseFloat(df.format( r.nextFloat(min, max)));
     }
 
 }
