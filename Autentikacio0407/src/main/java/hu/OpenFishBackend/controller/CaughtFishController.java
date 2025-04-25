@@ -2,6 +2,7 @@ package hu.OpenFishBackend.controller;
 
 import hu.OpenFishBackend.dto.caughtfish.CaughtFishDto;
 import hu.OpenFishBackend.dto.caughtfish.CaughtFishUserId;
+import hu.OpenFishBackend.dto.caughtfish.UpdateCaughtfish;
 import hu.OpenFishBackend.service.CaughtFishService;
 //import hu.openfishbackend1.project.Service.CaughtFishService;
 //import hu.openfishbackend1.project.dto.CaughtFish.CaughtFishDto;
@@ -31,13 +32,15 @@ public class CaughtFishController {
     }
 
     @PostMapping("/addupdate")
-    public ResponseEntity<String> addOrUpdateFish(@RequestBody CaughtFishDto caughtFishDto) {
+    public ResponseEntity<String> addOrUpdateFish(@RequestBody UpdateCaughtfish caughtFishDto) {
         if(caughtFishService.playerCaughtFish(caughtFishDto)) {
             System.out.println("false");
             caughtFishService.createCaughtFish(caughtFishDto);
+            caughtFishService.checkForRecord(caughtFishDto.getWeight(), caughtFishDto.getUserId(), caughtFishDto.getFishId());
         }else {
             System.out.println("true");
             caughtFishService.updateCaughtFishAmount(caughtFishDto);
+            caughtFishService.checkForRecord(caughtFishDto.getWeight(), caughtFishDto.getUserId(), caughtFishDto.getFishId());
         }
         return ResponseEntity.ok("Success");
     }
@@ -58,6 +61,7 @@ public class CaughtFishController {
 //        caughtFishService.updateCaughtFishAmount(request);
 //        return ResponseEntity.ok("Caught fish amount updated successfully!");
 //    }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCaughtFish(@PathVariable("id") int id) {

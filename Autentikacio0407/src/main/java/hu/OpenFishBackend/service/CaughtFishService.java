@@ -3,6 +3,7 @@ package hu.OpenFishBackend.service;
 import hu.OpenFishBackend.converter.CaughtFishConverter;
 import hu.OpenFishBackend.dto.caughtfish.CaughtFishDto;
 import hu.OpenFishBackend.dto.caughtfish.CaughtFishUserId;
+import hu.OpenFishBackend.dto.caughtfish.UpdateCaughtfish;
 import hu.OpenFishBackend.model.CaughtFish;
 import hu.OpenFishBackend.repository.CaughtFishRepository;
 import hu.OpenFishBackend.repository.FishRepository;
@@ -49,7 +50,7 @@ public class CaughtFishService {
         this.fishRepository = fishRepository;
     }
 
-    public void createCaughtFish(CaughtFishDto caughtFish) {
+    public void createCaughtFish(UpdateCaughtfish caughtFish) {
 
         if (userRepository.getUsersById(caughtFish.getUserId()) == null) {
             throw new RuntimeException("User not found");
@@ -62,18 +63,13 @@ public class CaughtFishService {
 //        System.out.println("Service: "+ caughtFish.toString());
 
         // Use the native query to insert into the database
-        caughtFishRepository.insertIntoCaughtFish(caughtFish.getUserId(), caughtFish.getFishId(), caughtFish.getAmount());
+        caughtFishRepository.insertIntoCaughtFish(caughtFish.getUserId(), caughtFish.getFishId(), caughtFishRepository.getCaughtFishByBothIds(caughtFish.getUserId(), caughtFish.getFishId()).getAmount()+1);
 
-
-        int returnValue = 0;
-        for(int i = 0; i< caughtFish.getAmount(); i++){
-            returnValue += (randomFishWeight(caughtFish.getFishId())*100);
-        }
-        userRepository.updatePointsById(caughtFish.getUserId(), userRepository.getPointsById(caughtFish.getUserId())+returnValue);
+        userRepository.updatePointsById(caughtFish.getUserId(), (int) (caughtFish.getWeight()*100));
 
     }
 
-    public boolean playerCaughtFish(CaughtFishDto caughtFish) {
+    public boolean playerCaughtFish(UpdateCaughtfish caughtFish) {
         if(caughtFishRepository.findAllByUserId(caughtFish.getUserId()) == 0) {
             System.out.println("jo");
             System.out.println("check return true");
@@ -102,7 +98,7 @@ public class CaughtFishService {
 
 
 
-    public void updateCaughtFishAmount(CaughtFishDto request) {
+    public void updateCaughtFishAmount(UpdateCaughtfish request) {
         // Validate if user exists
         if (!userRepository.existsById(request.getUserId())) {
             throw new RuntimeException("User not found");
@@ -117,14 +113,10 @@ public class CaughtFishService {
         int updatedRows = caughtFishRepository.updateCaughtFishAmount(
                 request.getUserId(),
                 request.getFishId(),
-                caughtFishRepository.getCaughtFishByBothIds(request.getUserId(), request.getFishId()).getAmount()+request.getAmount()
+                caughtFishRepository.getCaughtFishByBothIds(request.getUserId(), request.getFishId()).getAmount()+1
         );
 
-        int returnValue = 0;
-        for(int i = 0; i< request.getAmount(); i++){
-            returnValue += (randomFishWeight(request.getFishId())*100);
-        }
-        userRepository.updatePointsById(request.getUserId(), userRepository.getPointsById(request.getUserId()) + returnValue);
+        userRepository.updatePointsById(request.getUserId(), (int) (userRepository.getPointsById(request.getUserId()) + request.getWeight()*100));
 
 
 
@@ -141,6 +133,16 @@ public class CaughtFishService {
             throw new RuntimeException("Caught fish record with ID " + id + " not found");
         }
     }
+
+    public String checkForRecord(float weight, int userId, int fishId){
+        if(caughtFishRepository.checkForRecord(userId, fishId) < weight){
+            caughtFishRepository.updateRecord(weight, userId, fishId);
+            return "New record for user "+userId+" for fish "+fishId+" with the weight of "+ weight;
+        }else{
+            return "No new record";
+        }
+    }
+
 
     public int randomFishWeight(int fish_id){
 

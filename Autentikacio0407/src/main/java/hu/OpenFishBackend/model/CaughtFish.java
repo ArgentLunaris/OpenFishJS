@@ -31,6 +31,8 @@ public class CaughtFish implements Serializable {
     private Users user;
 
     private int amount;
+    private float record;
+
 
     public int getId() {
         return id;
@@ -62,5 +64,13 @@ public class CaughtFish implements Serializable {
 
     public void setUserId(Users user) {
         this.user = user;
+    }
+
+    public float getRecord() {
+        return record;
+    }
+
+    public void setRecord(float record) {
+        this.record = record;
     }
 }

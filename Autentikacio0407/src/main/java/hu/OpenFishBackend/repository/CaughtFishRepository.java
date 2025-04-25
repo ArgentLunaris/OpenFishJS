@@ -58,4 +58,12 @@ public interface CaughtFishRepository extends JpaRepository<CaughtFish, Integer>
 
     @Query(value = "SELECT * FROM caughtfish WHERE user_id = :user_id AND fish_id = :fish_id", nativeQuery = true)
     CaughtFish getCaughtFishByBothIds(@Param("user_id") int userId, @Param("fish_id") int fishId);
+
+    @Query(value = "SELECT record FROM caughtfish WHERE user_id = :user_id AND fish_id = :fish_id", nativeQuery = true)
+    float checkForRecord(@Param("user_id") int userId, @Param("fish_id") int fishId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE caughtfish SET record = :weight WHERE user_id = :user_id AND fish_id = :fish_id", nativeQuery = true)
+    void updateRecord(@Param("weight") float weight, @Param("user_id") int userId, @Param("fish_id") int fishId);
 }
