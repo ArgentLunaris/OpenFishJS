@@ -45,4 +45,7 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     @Query(value = "SELECT points FROM users WHERE id = :id ", nativeQuery = true)
     int getPointsById(@Param("id") int id);
+
+    @Query(value = "SELECT points FROM users WHERE id = :id", nativeQuery = true)
+    int getPointsOfUser(@Param("id") int id);
 }

@@ -119,4 +119,8 @@ public class UserService {
         }
 
     }
+
+    public int getUserPoints(int id) {
+        return userRepository.getPointsOfUser(id);
+    }
 }

@@ -1,9 +1,6 @@
 package hu.OpenFishBackend.controller;
 
-import hu.OpenFishBackend.dto.users.UpdateUsers;
-import hu.OpenFishBackend.dto.users.UserLogin;
-import hu.OpenFishBackend.dto.users.UserRegister;
-import hu.OpenFishBackend.dto.users.UserResponse;
+import hu.OpenFishBackend.dto.users.*;
 import hu.OpenFishBackend.model.Users;
 import hu.OpenFishBackend.service.UserService;
 import jakarta.validation.Valid;
@@ -77,6 +74,10 @@ public class UserController {
         return userService.deletePlayer(id);
     }
 
+    @PostMapping("/getPointsById")
+    public int getUserPoints(@RequestBody UserId id){
+        return userService.getUserPoints(id.getId());
+    }
 
 
 }
