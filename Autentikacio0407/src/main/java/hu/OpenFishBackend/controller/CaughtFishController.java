@@ -18,7 +18,7 @@ public class CaughtFishController {
 
     @Autowired
     private CaughtFishService caughtFishService;
-    
+
 
 //    @GetMapping
 //    public List<CaughtFishItem> getPlayers(){return caughtFishService.getAllCaughtFish();}
@@ -32,9 +32,11 @@ public class CaughtFishController {
 
     @PostMapping("/addupdate")
     public ResponseEntity<String> addOrUpdateFish(@RequestBody CaughtFishDto caughtFishDto) {
-        if(caughtFishService.asd(caughtFishDto)) {
+        if(caughtFishService.playerCaughtFish(caughtFishDto)) {
+            System.out.println("false");
             caughtFishService.createCaughtFish(caughtFishDto);
         }else {
+            System.out.println("true");
             caughtFishService.updateCaughtFishAmount(caughtFishDto);
         }
         return ResponseEntity.ok("Success");

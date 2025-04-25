@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,13 +64,29 @@ public class CaughtFishService {
         // Use the native query to insert into the database
         caughtFishRepository.insertIntoCaughtFish(caughtFish.getUserId(), caughtFish.getFishId(), caughtFish.getAmount());
 
+
+        int returnValue = 0;
+        for(int i = 0; i< caughtFish.getAmount(); i++){
+            returnValue += (randomFishWeight(caughtFish.getFishId())*100);
+        }
+        userRepository.updatePointsById(caughtFish.getUserId(), userRepository.getPointsById(caughtFish.getUserId())+returnValue);
+
     }
 
-    public boolean asd(CaughtFishDto caughtFish) {
-        if(caughtFishRepository.findAllByUserId(caughtFish.getFishId()) == 1) {
-            return false;
-        }else{
+    public boolean playerCaughtFish(CaughtFishDto caughtFish) {
+        if(caughtFishRepository.findAllByUserId(caughtFish.getUserId()) == 0) {
+            System.out.println("jo");
+            System.out.println("check return true");
             return true;
+        }else{
+            System.out.println("nem jo");
+            if(caughtFishRepository.userCaughtFish(caughtFish.getUserId(), caughtFish.getFishId()) == 0) {
+                System.out.println("else return true");
+                return true;
+            }else {
+                System.out.println("else return false");
+                return false;
+            }
         }
     }
 
@@ -100,8 +117,16 @@ public class CaughtFishService {
         int updatedRows = caughtFishRepository.updateCaughtFishAmount(
                 request.getUserId(),
                 request.getFishId(),
-                request.getAmount()
+                caughtFishRepository.getCaughtFishByBothIds(request.getUserId(), request.getFishId()).getAmount()+request.getAmount()
         );
+
+        int returnValue = 0;
+        for(int i = 0; i< request.getAmount(); i++){
+            returnValue += (randomFishWeight(request.getFishId())*100);
+        }
+        userRepository.updatePointsById(request.getUserId(), userRepository.getPointsById(request.getUserId()) + returnValue);
+
+
 
         if (updatedRows == 0) {
             throw new RuntimeException("Caught fish record not found for this user and fish");
@@ -116,4 +141,14 @@ public class CaughtFishService {
             throw new RuntimeException("Caught fish record with ID " + id + " not found");
         }
     }
+
+    public int randomFishWeight(int fish_id){
+
+        int weight = 0;
+        Random r = new Random();
+        weight = (int) (r.nextInt((int) (fishRepository.getFishById(fish_id).getMaxWeight()-fishRepository.getFishById(fish_id).getMinWeight()))+fishRepository.getFishById(fish_id).getMinWeight());
+        System.out.println("the weight is "+weight);
+        return weight;
+    }
+
 }
