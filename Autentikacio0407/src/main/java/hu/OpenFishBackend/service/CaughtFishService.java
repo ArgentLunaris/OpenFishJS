@@ -31,15 +31,14 @@ public class CaughtFishService {
 
     private final int SCORE_MULT = 10;
 
-
-
     public List<CaughtFishDto> getAllCaughtFish() {
-        List<Object[]> results = caughtFishRepository.findAllCaughtFishSimple();
+        List<CaughtFish> results = caughtFishRepository.findAllCaughtFishSimple();
         return results.stream()
                 .map(obj -> new CaughtFishDto(
-                        ((Number) obj[0]).intValue(), //
-                        ((Number) obj[1]).intValue(), // fishId
-                        (Integer) obj[2]              // amount
+                        obj.getUserId().getId(),
+                        obj.getFishId().getId(),
+                        obj.getAmount(),
+                        obj.getRecord()
                 ))
                 .collect(Collectors.toList());
     }
@@ -52,40 +51,27 @@ public class CaughtFishService {
         this.fishRepository = fishRepository;
     }
 
-    public void createCaughtFish(UpdateCaughtfish caughtFish) {
+    public CaughtFishDto createCaughtFish(UpdateCaughtfish caughtFish) {
 
         if (userRepository.getUsersById(caughtFish.getUserId()) == null) {
             throw new RuntimeException("User not found");
         }
 
-        // Validate that the Fish exists
+
         if (fishRepository.getFishById(caughtFish.getFishId()) == null) {
             throw new RuntimeException("Fish not found");
         }
 //        System.out.println("Service: "+ caughtFish.toString());
 
-        // Use the native query to insert into the database
-        caughtFishRepository.insertIntoCaughtFish(caughtFish.getUserId(), caughtFish.getFishId(), 1);
+        caughtFishRepository.insertIntoCaughtFish(caughtFish.getUserId(), caughtFish.getFishId(), 1, caughtFish.getWeight());
 
         userRepository.updatePointsById(caughtFish.getUserId(), (int) (userRepository.getPointsById(caughtFish.getUserId()) + caughtFish.getWeight()*SCORE_MULT));
 
+        return new CaughtFishDto(caughtFish.getUserId(), caughtFish.getFishId(), 1, caughtFish.getWeight());
     }
 
     public boolean playerCaughtFish(UpdateCaughtfish caughtFish) {
-        if(caughtFishRepository.findAllByUserId(caughtFish.getUserId()) == 0) {
-            System.out.println("jo");
-            System.out.println("check return true");
-            return true;
-        }else{
-            System.out.println("nem jo");
-            if(caughtFishRepository.userCaughtFish(caughtFish.getUserId(), caughtFish.getFishId()) == 0) {
-                System.out.println("else return true");
-                return true;
-            }else {
-                System.out.println("else return false");
-                return false;
-            }
-        }
+        return caughtFishRepository.userCaughtFish(caughtFish.getUserId(), caughtFish.getFishId()) == 0;
     }
 
     public List<CaughtFishDto> allCaughtFishForId(CaughtFishUserId user){
@@ -100,31 +86,26 @@ public class CaughtFishService {
 
 
 
-    public void updateCaughtFishAmount(UpdateCaughtfish request) {
-        // Validate if user exists
+    public CaughtFishDto updateCaughtFishAmount(UpdateCaughtfish request) {
         if (!userRepository.existsById(request.getUserId())) {
             throw new RuntimeException("User not found");
         }
 
-        // Validate if fish exists
         if (!fishRepository.existsById(request.getFishId())) {
             throw new RuntimeException("Fish not found");
         }
 
-        // Execute the native update query
-        int updatedRows = caughtFishRepository.updateCaughtFishAmount(
+        int newAmount = caughtFishRepository.getCaughtFishByBothIds(request.getUserId(), request.getFishId()).getAmount()+1;
+
+        caughtFishRepository.updateCaughtFishAmount(
                 request.getUserId(),
                 request.getFishId(),
-                caughtFishRepository.getCaughtFishByBothIds(request.getUserId(), request.getFishId()).getAmount()+1
+                newAmount
         );
 
         userRepository.updatePointsById(request.getUserId(), (int) (userRepository.getPointsById(request.getUserId()) + request.getWeight()*SCORE_MULT));
 
-
-
-        if (updatedRows == 0) {
-            throw new RuntimeException("Caught fish record not found for this user and fish");
-        }
+        return new CaughtFishDto(request.getUserId(), request.getFishId(), newAmount, 0);
     }
 
 
@@ -136,13 +117,13 @@ public class CaughtFishService {
         }
     }
 
-    public String checkForRecord(float weight, int userId, int fishId){
-        if(caughtFishRepository.checkForRecord(userId, fishId) < weight){
+    public float checkForRecord(float weight, int userId, int fishId){
+        float currentRecord = caughtFishRepository.getRecord(userId, fishId);
+        if(currentRecord < weight){
             caughtFishRepository.updateRecord(weight, userId, fishId);
-            return "New record for user "+userId+" for fish "+fishId+" with the weight of "+ weight;
-        }else{
-            return "No new record";
+            return weight;
         }
+        return currentRecord;
     }
 
 

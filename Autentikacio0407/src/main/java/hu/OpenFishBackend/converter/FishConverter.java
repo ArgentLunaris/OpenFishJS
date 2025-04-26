@@ -17,23 +17,12 @@ public class FishConverter {
         randomFish.setRarity(fish.getRarity());
         float min = fish.getMinWeight();
         float max = fish.getMaxWeight();
-        float weight = randomWeight(min, max);
-        boolean temp = true;
-        while(temp) {
-            if(weight < max && weight > min){
-
-                randomFish.setWeight(weight);
-                temp = false;
-            }
-            weight = randomWeight(min, max);
-        }
+        randomFish.setWeight(randomWeight(min, max));
         return randomFish;
     }
 
     private float randomWeight(float min, float max){
-        Random r = new Random();
-        DecimalFormat df = new DecimalFormat("#.##");
-        return Float.parseFloat(df.format( r.nextFloat(min, max)));
+        return (float) (Math.round((Math.random() * (max - min) + min) * 100.0) / 100.0);
     }
 
 }

@@ -32,17 +32,17 @@ public class CaughtFishController {
     }
 
     @PostMapping("/addupdate")
-    public ResponseEntity<String> addOrUpdateFish(@RequestBody UpdateCaughtfish caughtFishDto) {
+    public CaughtFishDto addOrUpdateFish(@RequestBody UpdateCaughtfish caughtFishDto) {
         if(caughtFishService.playerCaughtFish(caughtFishDto)) {
             System.out.println("false");
-            caughtFishService.createCaughtFish(caughtFishDto);
-            caughtFishService.checkForRecord(caughtFishDto.getWeight(), caughtFishDto.getUserId(), caughtFishDto.getFishId());
+            return caughtFishService.createCaughtFish(caughtFishDto);
         }else {
             System.out.println("true");
-            caughtFishService.updateCaughtFishAmount(caughtFishDto);
-            caughtFishService.checkForRecord(caughtFishDto.getWeight(), caughtFishDto.getUserId(), caughtFishDto.getFishId());
+            CaughtFishDto ret = caughtFishService.updateCaughtFishAmount(caughtFishDto);
+            ret.setRecord(caughtFishService.checkForRecord(caughtFishDto.getWeight(), caughtFishDto.getUserId(), caughtFishDto.getFishId()));
+            return ret;
         }
-        return ResponseEntity.ok("Success");
+        //return fishy :);
     }
 
     @PostMapping("/getAllForUser")

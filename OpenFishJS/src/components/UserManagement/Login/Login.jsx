@@ -23,13 +23,16 @@ export default function Login({ isOpen, setIsOpen, switchLR }) {
             password: formInput.password
         })
             .then((response) => {
-                if (response.data.token != "Fail") {
+
+                if (response.data.token == "wrong password") {
+                    setErrorMessage("Incorrect password!")
+                } else if (response.data.token == "user not found") {
+                    setErrorMessage("User not found!")
+                } else {
                     localStorage.setItem("token", response.data.token)
                     localStorage.setItem("id", response.data.userId)
                     setIsOpen(false)
                     window.location.reload(false)
-                } else {
-                    setErrorMessage("Incorrect username or password")
                 }
 
 

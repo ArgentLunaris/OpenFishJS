@@ -12,6 +12,7 @@ public class CaughtFishConverter {
         c.setFishId(caughtFish.getFishId().getId());
         c.setUserId(caughtFish.getUserId().getId());
         c.setAmount(caughtFish.getAmount());
+        c.setRecord(caughtFish.getRecord());
         return c;
     }
 

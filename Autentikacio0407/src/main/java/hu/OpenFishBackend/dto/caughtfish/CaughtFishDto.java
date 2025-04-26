@@ -9,13 +9,15 @@ public class CaughtFishDto {
     private int userId;
     private int fishId;
     private int amount;
+    private float record;
 
     public CaughtFishDto() {}
 
-    public CaughtFishDto(int userId, int fishId, int amount) {
+    public CaughtFishDto(int userId, int fishId, int amount, float record) {
         this.userId = userId;
         this.fishId = fishId;
         this.amount = amount;
+        this.record = record;
     }
 
     public int getUserId() {
@@ -42,12 +44,21 @@ public class CaughtFishDto {
         this.amount = amount;
     }
 
+    public float getRecord() {
+        return record;
+    }
+
+    public void setRecord(float record) {
+        this.record = record;
+    }
+
     @Override
     public String toString() {
         return "CaughtFishDto{" +
-                "userId=" + userId +
+                "amount=" + amount +
+                ", userId=" + userId +
                 ", fishId=" + fishId +
-                ", amount=" + amount +
+                ", record=" + record +
                 '}';
     }
 }

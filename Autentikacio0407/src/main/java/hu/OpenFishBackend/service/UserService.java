@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -49,12 +50,16 @@ public class UserService {
 //        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
 
+        Optional<Users> tempU = userRepository.findByUsername(user.getUsername());
 
+        if(tempU.isEmpty()){
+            return "user not found";
+        }
 
-        if(bCryptPasswordEncoder.matches(user.getPassword(), userRepository.findByUsername(user.getUsername()).getPassword())){
+        if(bCryptPasswordEncoder.matches(user.getPassword(), tempU.get().getPassword())){
             return jwtService.generateToken(user.getUsername());
         }else{
-            return "Fail";
+            return "wrong password";
         }
 
     }
@@ -106,7 +111,7 @@ public class UserService {
     }
 
     public int getUserId(String username, String password){
-        return userRepository.findByUsername(username).getId();
+        return userRepository.findByUsername(username).map(Users::getId).orElse(0);
     }
 
 

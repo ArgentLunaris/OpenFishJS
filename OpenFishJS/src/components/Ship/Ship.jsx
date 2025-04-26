@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import placeholder_ship from "../../../src/assets/placeholder_ship.png";
+import placeholder_hook from "../../../src/assets/placeholder_hook.png";
 import styles from "./Ship.module.css";
 
-export default function Ship({ direction }) {
+export default function Ship({ direction, minigameDone }) {
 
     const [animation, setAnimation] = useState(styles.idle)
 
@@ -21,6 +22,7 @@ export default function Ship({ direction }) {
 
 
     return <>
+        {minigameDone ? null : <img src={placeholder_hook} className={styles.hook}></img>}
         <img src={placeholder_ship} className={`${styles.ship} ${animation}`} />
     </>
 }

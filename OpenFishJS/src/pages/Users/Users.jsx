@@ -9,41 +9,41 @@ export default function Users() {
     const [list, setList] = useState([]);
 
     const theme = createTheme({
-            typography: {
-                fontFamily: 'Itim'
-            },
-            button:{
-                fontFamily: 'Itim'
-            }
-        })
+        typography: {
+            fontFamily: 'Itim'
+        },
+        button: {
+            fontFamily: 'Itim'
+        }
+    })
 
     useEffect(() => {
         document.body.classList.add("users-body")
         return () => { document.body.classList.remove("users-body") }
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         axios.get("api/listPlayers", { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
-        .then((response) => setList(response.data.sort((a,b) => a.points - b.points)))
-        .catch((error) => console.error(error));
+            .then((response) => setList(response.data.sort((a, b) => b.points - a.points)))
+            .catch((error) => console.error(error));
     }, [])
 
     const navigate = useNavigate();
 
-    const navToGame = () =>{
+    const navToGame = () => {
         navigate("/")
     }
 
     return <ThemeProvider theme={theme}>
-        <Button size="large" sx={{color:"black", fontSize:20, right:"10px", position:"fixed"}} onClick={navToGame}>Back to Game</Button>
+        <Button size="large" sx={{ color: "black", fontSize: 20, right: "10px", position: "fixed" }} onClick={navToGame}>Back to Game</Button>
         <Typography variant="h3" align="center">Leaderboards</Typography>
-        <div className={styles.card}>
-            {list.map((u, key)=> {
-                return <div key={key}>
+        {list.map((u, key) => {
+            return <div className={styles.card} key={key}>
+                <div>
                     <Typography variant="h6">{u.username}</Typography>
                     <Typography>{u.points} points</Typography>
                 </div>
-            })}
-        </div>
+            </div>
+        })}
     </ThemeProvider>
 }

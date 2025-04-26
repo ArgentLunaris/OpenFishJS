@@ -1,19 +1,29 @@
-.ship{
+.ship {
     display: flex;
     float: left;
     width: 300px;
     position: absolute;
-    
+
     bottom: 350px;
     left: 10vh;
     transform: scalex(-1);
     z-index: -1;
     opacity: 1;
-    
+
+}
+
+.hook {
+    display: flex;
+    float: left;
+    width: 50px;
+    position: absolute;
+
+    bottom: 650px;
+    left: 23vh;
 }
 
 
-.move_forwards{
+.move_forwards {
     animation-name: move_forwards;
     animation-duration: 1s;
     animation-direction: alternate;
@@ -22,7 +32,7 @@
     animation-delay: 0ms;
 }
 
-.move_backwards{
+.move_backwards {
     animation-name: move_backwards;
     animation-duration: 1s;
     animation-direction: alternate;
@@ -32,7 +42,7 @@
     transform: scalex(1);
 }
 
-.idle{
+.idle {
     animation-name: idle;
     animation-duration: 5s;
     animation-direction: alternate;
@@ -42,16 +52,31 @@
 }
 
 @keyframes idle {
-    0% {rotate: 5deg;}
-    100% {rotate: -5deg;}
+    0% {
+        rotate: 5deg;
+    }
+
+    100% {
+        rotate: -5deg;
+    }
 }
 
 @keyframes move_forwards {
-    0% {rotate: -2deg;}
-    100% {rotate: -7deg;}
+    0% {
+        rotate: -2deg;
+    }
+
+    100% {
+        rotate: -7deg;
+    }
 }
 
 @keyframes move_backwards {
-    0% {rotate: 2deg;}
-    100% {rotate: 7deg;}
+    0% {
+        rotate: 2deg;
+    }
+
+    100% {
+        rotate: 7deg;
+    }
 }

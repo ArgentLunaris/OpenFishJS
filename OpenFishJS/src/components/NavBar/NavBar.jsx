@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, createTheme, ThemeProvider, Toolbar, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-export default function NavBar({ distance, togglePedia, points }) {
+export default function NavBar({ distance, togglePedia, points, accountScreen}) {
 
     const theme = createTheme({
         typography: {
@@ -18,6 +18,10 @@ export default function NavBar({ distance, togglePedia, points }) {
 
     const navToUsers = () =>{
         navigate("/users")
+    }
+
+    const openAccountScreen = () =>{
+        accountScreen(true)
     }
 
     return <AppBar position='static' sx={{
@@ -44,7 +48,7 @@ export default function NavBar({ distance, togglePedia, points }) {
 
 
                 <Button color='white' variant='text' sx={{ textTransform: 'capitalize', fontSize: 'large' }} onClick={navToUsers}>Users</Button>
-                <Button color='white' variant='text' sx={{ textTransform: 'capitalize', fontSize: 'large' }}>Account</Button>
+                <Button color='white' variant='text' sx={{ textTransform: 'capitalize', fontSize: 'large' }} onClick={openAccountScreen}>Account</Button>
                 <Button color='white' variant='text' sx={{ textTransform: 'capitalize', fontSize: 'large' }} onClick={logOut}>Log Out</Button>
             </Toolbar>
         </ThemeProvider>
