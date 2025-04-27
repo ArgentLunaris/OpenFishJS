@@ -25,11 +25,10 @@ public class UserController {
     public Users register(@RequestBody @Valid UserRegister user) {
 
         if(user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty()){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "szia, nem lehet üres a felhasználónév sem, a jelszó sem és az email sem!");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Username and password can not be empty!");
         }else if(!Objects.equals(userService.userExistsByUsernameOrEmail(user.getUsername(), user.getEmail()), "No user like this exists")){
-            System.out.println("idk");
         }else if(!Pattern.matches("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}", user.getEmail())){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "nem jó az email regex! ☺");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The email is wrong!");
         }
 
         return userService.register(user);

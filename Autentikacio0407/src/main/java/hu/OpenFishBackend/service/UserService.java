@@ -64,10 +64,6 @@ public class UserService {
 
     }
 
-
-    //
-
-
     public List<Users>  listAll(){return userRepository.listUsers();}
 
 

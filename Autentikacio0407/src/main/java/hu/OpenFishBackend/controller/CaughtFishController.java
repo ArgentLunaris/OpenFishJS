@@ -63,10 +63,10 @@ public class CaughtFishController {
 //    }
 
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteCaughtFish(@PathVariable("id") int id) {
-        caughtFishService.deleteCaughtFishById(id);
-        return ResponseEntity.ok("Caught fish record deleted successfully!");
-    }
+//    @DeleteMapping("/delete/{id}")
+//    public ResponseEntity<String> deleteCaughtFish(@PathVariable("id") int id) {
+//        caughtFishService.deleteCaughtFishById(id);
+//        return ResponseEntity.ok("Caught fish record deleted successfully!");
+//    }
 
 }
