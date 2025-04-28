@@ -61,7 +61,6 @@ public class CaughtFishService {
         if (fishRepository.getFishById(caughtFish.getFishId()) == null) {
             throw new RuntimeException("Fish not found");
         }
-//        System.out.println("Service: "+ caughtFish.toString());
 
         caughtFishRepository.insertIntoCaughtFish(caughtFish.getUserId(), caughtFish.getFishId(), 1, caughtFish.getWeight());
 
@@ -132,7 +131,6 @@ public class CaughtFishService {
         int weight = 0;
         Random r = new Random();
         weight = (int) (r.nextInt((int) (fishRepository.getFishById(fish_id).getMaxWeight()-fishRepository.getFishById(fish_id).getMinWeight()))+fishRepository.getFishById(fish_id).getMinWeight());
-        System.out.println("the weight is "+weight);
         return weight;
     }
 

@@ -37,16 +37,6 @@ CREATE TABLE `caughtfish` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `caughtfish`
---
-
-LOCK TABLES `caughtfish` WRITE;
-/*!40000 ALTER TABLE `caughtfish` DISABLE KEYS */;
-INSERT INTO `caughtfish` VALUES (1,1,13,2,0.0043662),(2,1,9,10,229.48),(3,1,14,9,1.45),(4,1,10,8,1.98),(5,1,7,11,5.33),(7,1,17,5,0.24),(8,1,21,7,0.563394),(9,1,18,6,19.24),(10,1,5,12,2.35),(11,1,23,5,65.7763),(12,1,15,13,47.83),(13,1,4,5,980.75),(14,1,6,6,12.16),(15,1,2,8,247.85),(16,1,22,3,2.13);
-/*!40000 ALTER TABLE `caughtfish` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `fish`
 --
 
@@ -96,15 +86,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `users`
---
-
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'ensil@testing.com','$2a$12$agzGR3Zca8ZVakLouI8MLu6NWDwnmPJVEmNuqHToXox1nTXvyf5Z2',91519,NULL,'Ensil');
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

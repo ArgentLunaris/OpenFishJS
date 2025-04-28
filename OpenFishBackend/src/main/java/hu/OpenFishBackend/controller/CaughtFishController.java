@@ -34,10 +34,8 @@ public class CaughtFishController {
     @PostMapping("/addupdate")
     public CaughtFishDto addOrUpdateFish(@RequestBody UpdateCaughtfish caughtFishDto) {
         if(caughtFishService.playerCaughtFish(caughtFishDto)) {
-            System.out.println("false");
             return caughtFishService.createCaughtFish(caughtFishDto);
         }else {
-            System.out.println("true");
             CaughtFishDto ret = caughtFishService.updateCaughtFishAmount(caughtFishDto);
             ret.setRecord(caughtFishService.checkForRecord(caughtFishDto.getWeight(), caughtFishDto.getUserId(), caughtFishDto.getFishId()));
             return ret;
