@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class Autentikacio0407Application {
+public class OpenFishBackendApplication {
 
     @Bean
     String[] openEndpoints(){
@@ -22,7 +22,7 @@ public class Autentikacio0407Application {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Autentikacio0407Application.class, args);
+        SpringApplication.run(OpenFishBackendApplication.class, args);
     }
 
 }
