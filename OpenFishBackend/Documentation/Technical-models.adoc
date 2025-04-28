@@ -1,0 +1,127 @@
+= Technical Models
+
+This chapter provides a detailed technical insight into the backend system of the OpenFishJS project.
+The backend is developed in Java using the Spring Boot framework and follows a modular, layered architecture.
+
+== 1. System Architecture Overview
+
+The backend application follows a layered architecture:
+
+- **Controller layer**: Handles HTTP requests and responses.
+- **Service layer**: Contains business logic.
+- **Repository layer**: Interfaces with the database using Spring Data JPA.
+- **Domain/Model layer**: Defines data structures and relationships.
+
+== 2. Package Structure
+
+The project is organized under the base package: `hu.OpenFishBackend`. Each feature is implemented in its own subpackage:
+
+- `controller`: Which contains the endpoints for communication
+- `service`: Which contains logic that the application uses in different places
+- `repository`: Which contains logic that is responsible for the communication between the backend and the database
+- `converter`: Which contains translates the data recieved into information the backend can then use or translates data that the backend sends into data that the frontend can work with
+- `dto`: Which contains the models of the data that is being sent or recieved
+- `model`: Which contains the models, which the backend works with
+- `config`: Which contains the logic responsible for creating and ensuring that the authentication works as intended
+- `exceptions`: Which contains the exceptions that the backend can run into
+
+
+== 3. Entity Models
+
+Each entity is a Java class annotated with `@Entity` and is stored in the model package.
+
+Such as: `Fish` entity in `model/Fish.java`:
+[source,java]
+----
+@Entity
+@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Fish {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String species;
+    private String description;
+    private String rarity;
+    private String wiki;
+    private int distance;
+    @Column(name="min_weight")
+    private float minWeight;
+    @Column(name="max_weight")
+    private float maxWeight;
+    // ... getters, setters
+}
+----
+
+All entities use JPA annotations, and most are linked via `@OneToMany`, `@ManyToOne` or `@OneToOne` relations.
+
+== 4. Database
+
+- Uses **MySql** as the database engine.
+- ORM provided via Spring Data JPA.
+- Each repository interface extends `JpaRepository`.
+
+== 5. Services
+
+Each entity has a `Service` class , such as `FishService` containing business logic.
+
+[source,java]
+----
+@Service
+public class FishService {
+    public List<Fish> listAll() {return fishRepository.getAllFish();}
+
+}
+----
+
+== 6. REST API Endpoints
+
+Controllers handle HTTP endpoints. Example from `FishController`:
+
+- `GET /fish/getAll`
+
+All endpoints return JSON and use `@RestController` annotation.
+
+== 7. Cors
+
+In this project we do not use the regular policies of cors, rather we use the built-in functions provided by Vite to establish communication between the front and backend of the application.
+
+
+== 8. Exception Handling
+
+Custom exceptions are defined, as follows: `EmailAlreadyExists`, `FishNotFoundException`.
+
+They are handled in the `@ControllerAdvice` class which is `GlobalExceptionHandler`.
+
+== 9. Security
+
+- Authentication logic consists of a simple encryption method involving Jwt.
+
+== 10. Configuration
+
+- `application.properties` defines DB config.
+- Spring Boot auto-configures most components.
+
+== 11. Dependencies
+
+- Java 17
+- Spring Boot 3.x
+- Spring Web, Spring Data JPA, WebSocket
+- MySql Connector
+- Lombok
+
+== 12. Build Tool
+
+- Uses Maven (`pom.xml`)
+- Includes plugin configurations for build and dependency management
+
+== Summary
+
+The backend is cleanly modularized and extensible. Real-time support,
+REST APIs, and database integration make it a robust architecture for a
+singleplayer fishing game.
+
+link:System-plan.adoc[back]

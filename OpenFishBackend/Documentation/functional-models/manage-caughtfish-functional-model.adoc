@@ -1,0 +1,89 @@
+= Managing Fish - Functional Model
+
+== Description
+To store the fish the player has already caught the system stores the data in a database
+
+== Use cases
+
+=== Short description of use cases
+[cols="1h,4"]
+|===
+| Use case
+| Getting all the users and all their fish caught
+
+| Identifier
+| UC_P_Get
+
+| Cause event
+| The frontend calls this for a leaderboard
+
+| Initial run
+| The application makes a query to the database
+
+| Exceptions and alternatives
+| - There are no records for and players
+
+| Postcondition
+| The system returns all the fish and all the users
+
+| result
+| The application can work with the fish and the users
+
+| User case realisation
+| Technical model
+
+|===
+
+[cols="1h,4"]
+|===
+| Use case
+| Adding a new fish to a player
+
+| Identifier
+| UC_P_Post
+
+| Cause event
+| A player has caught a fish for the first time
+
+| Initial run
+| The system creates a new record in the database
+
+| Exceptions and alternatives
+| - There is no player with the given id
+
+| Result
+| The system returns a fish and the program keeps running
+
+| Use case realisation
+| Technical model
+
+|===
+
+
+[cols="1h,4"]
+|===
+| Use case
+| Updating a fish for a player
+
+| Identifier
+| UC_P_Put
+
+| Cause event
+| A player has caught a fish but not for the first time
+
+| Initial run
+| The system adds one to the amount of fish caught for the user with the given id
+
+| Exceptions and alternatives
+| - There is no player with the given id
+
+| Postcondition
+| The system updates the amount of the fish successfully for the user with the given id
+
+| Result
+| The system updates the amount successfully
+
+| Use case realisation
+| Technical model
+
+|===

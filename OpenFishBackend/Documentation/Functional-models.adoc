@@ -1,0 +1,7 @@
+= Functional models
+
+* link:functional-models/manage-users-functional-model.adoc[Managing users]
+* link:functional-models/manage-fish-functional-model.adoc[Managing fish]
+* link:functional-models/manage-caughtfish-functional-model.adoc[Managing caught fish]
+
+link:System-plan.adoc[Back]

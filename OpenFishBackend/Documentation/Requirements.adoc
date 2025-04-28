@@ -1,0 +1,50 @@
+= Requirements specification
+
+[cols="5,3,2"]
+|===
+| Requirements | Use cases | Status
+
+| *User management*
+  Listing all the users in the database.
+  Registering a new user in the system.
+  Ensuring opportunity for login.
+  Providing opportunity to change user data for the users.
+  Providing opportunity for users to delete their account.
+
+| User CRUD + lister + changing data + login
+
+| Backend done
+
+| *Fish management*
+Listing the fish in the database.
+Inspecting the data of the selected fish.
+Getting a random fish based on the provided distance.
+
+|
+* Listing all the fish
+
+* Inspecting a fish
+
+* Inspecting a random fish
+
+| Backend done
+
+| *Managing caught fish*
+
+Displaying all the fish caught by all of the users.
+In case of the user catching a fish for the first time, we create a new record for it in the database.
+In case of the user not catching a fish for the first time, we update the amount of the fish that was caught.
+
+
+|
+* Listing all the caught fish.
+
+* Saving the newly caught fish of a user.
+
+* Increasing the amount of fish a user caught.
+
+| Backend done
+
+|===
+
+link:README.adoc[Back]

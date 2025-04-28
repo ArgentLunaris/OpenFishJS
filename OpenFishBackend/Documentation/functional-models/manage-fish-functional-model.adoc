@@ -1,0 +1,63 @@
+= Managing Fish - Functional Model
+
+== Description
+To be able to work with the fish that we have in the database the application must get the data from somwhere
+
+== Use cases
+
+=== Short description of use cases
+[cols="1h,4"]
+|===
+| Use case
+| Getting a specific fish
+
+| Identifier
+| UC_P_Get
+
+| Cause event
+| The user caught a fish of this variant
+
+| Initial run
+| The application makes a query to the database with the id of the fish
+
+| Exceptions and alternatives
+| - There is no fish with this id
+
+| Postcondition
+| The system returns the fish
+
+| result
+| The application can work with the fish
+
+| User case realisation
+| Technical model
+
+|===
+
+[cols="1h,4"]
+|===
+| Use case
+| Getting a random fish for a distance provided
+
+| Identifier
+| UC_P_Get
+
+| Cause event
+| The application needs a random fish, that is in a small radius around the distance given
+
+| Initial run
+| The system returns a fish and the program keeps running
+
+| Exceptions and alternatives
+| - There is no fish in that radius
+
+| Postcondition
+| The system returns a fish and the program keeps running
+
+| Result
+| The system returns a fish and the program keeps running
+
+| Use case realisation
+| Technical model
+
+|===

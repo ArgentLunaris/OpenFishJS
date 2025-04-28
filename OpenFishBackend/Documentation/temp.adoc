@@ -1,0 +1,138 @@
+= Requirements Specification
+
+== Purpose
+
+This document defines the core requirements for the application, ensuring that it meets the needs of all stakeholders. It will cover both functional and non-functional requirements, providing a foundation for development and testing.
+
+== Scope
+
+The system will provide an interactive word game where users need to guess the word from emojis or write a word with emojis and also they can propose new words, manage existing words, and perform various tasks based on their role (e.g., general user, moderator). The application will be accessible on web and mobile platforms.
+
+== Functional Requirements
+
+=== 1. User Registration and Authentication
+
+[NOTE]
+====
+**Description:** Users must be able to register by providing a valid email address, a username, and a password.
+
+- **Precondition:** The user does not need to be logged in.
+- **Post-condition:** User account is created and can log in.
+
+**Use Case:**
+- A new user registers by entering their email, username, and password.
+====
+
+=== 2. Role Management
+
+[NOTE]
+====
+**Description:** There are three types of users: general users, authenticated users, and moderators. Roles should be assignable based on the user’s registration and privileges.
+
+- **Precondition:** User registration must be completed.
+- **Post-condition:** User is assigned the appropriate role (e.g., general user, moderator).
+
+**Use Case:**
+- General users can play the game
+- Authenticated users can propose changes in connection with words, can apply for moderator.
+- Moderators can approve or reject word proposals and moderator requests.
+====
+
+=== 3. Word Management
+
+[NOTE]
+====
+**Description:** The system will allow users to propose new words, modify existing words, and delete words. Proposals will be reviewed by moderators.
+
+- **Precondition:** User must be authenticated to propose words.
+- **Post-condition:** A change is proposed.
+
+**Use Case:**
+- A user submits a request for approval by moderators.
+- Moderators review, approve, or reject the submitted word.
+====
+
+=== 4. Proposal and Review
+
+[NOTE]
+====
+**Description:** All word proposals made by users must go through a review process by moderators. Moderators have the ability to approve or reject proposals.
+
+- **Precondition:** A word must be proposed by an authenticated user.
+- **Post-condition:** Word is either added, modified, deleted, or rejected.
+
+**Use Case:**
+- User submits a proposal to add, change, or delete a word.
+- Moderator reviews the word and either accepts or rejects the proposal.
+====
+
+=== 5. Game Mechanics
+
+[NOTE]
+====
+**Description:** The application will provide an interactive word game, where users must guess the correct word from a series of emojis or they must write the emojis for a word. Users will take turns proposing words and guessing based on the emojis shown.
+
+- **Precondition:** Users must join a room to play the game.
+- **Post-condition:** The game progresses, either a new word is revealed, or a turn ends.
+
+**Use Case:**
+- A user enters the game room.
+- Another user displays a word represented by emojis.
+- The user attempts to guess the word.
+- If the user guesses the word correctly, the round ends and another player becomes the writer.
+- If the user guesses incorrectly, the system allows another attempts until the time is up.
+====
+
+=== 6. Game Room Management
+
+[NOTE]
+====
+**Description:** Players can join a game room. A game room will allow a fixed number of players and will track the game's progress, including the number of rounds and the current word being guessed.
+
+- **Precondition:** The user must be registered and authenticated to join a game room.
+- **Post-condition:** The user joins an existing room, and the game begins.
+
+**Use Case:**
+- Players join the game.
+- The game begins when the required number of players have joined.
+- Players take turns proposing and guessing words until the game ends or reaches its set limit.
+====
+
+[cols="1h,4"]
+|===
+| Use Case
+| Registering a New User
+
+| Identifier
+| UC_A_Register
+
+| Triggering Event
+| The user wants to register a new account
+
+| Users
+| General User
+
+| Primary Flow
+|
+
+    The user navigates to the registration interface
+
+    The user enters their email, password, and username
+
+    The system validates the input and creates the account
+
+    A success message is displayed
+
+| Exceptions and Alternatives
+| Email already exists
+
+| Post condition
+| A new user is created and can log in
+
+| Result
+| User is redirected to the login screen
+
+| Use Case Realization
+| AuthController.register()
+
+|===

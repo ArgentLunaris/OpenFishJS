@@ -1,0 +1,382 @@
+= Managing Players - Functional Model
+
+== Description
+To store the score earned in the game, players can log in. With their accounts, they can perform extra operations: they can edit their profile data, delete their profiles.
+== Use cases
+
+=== Short description of use cases
+[cols="1h,4"]
+|===
+| Use case
+| Creating a profile
+
+| Identifier
+| UC_P_Create
+
+| Cause event
+| The user would like to log in, but does not have an account yet
+
+| Initial run
+| The user clicks on the craete an account button
+
+| Exceptions and alternatives
+| - A profile already exists with the given data
+
+| Postcondition
+| The system creates the profile
+
+| result
+| The user can log in to their profile and can store their points so that later they might continue where they left off.
+
+| User case realisation
+| Technical model
+
+|===
+
+[cols="1h,4"]
+|===
+| Use case
+| Login
+
+| Identifier
+| UC_P_Get
+
+| Cause event
+| The user would like to log in and already has an account.
+
+| Initial run
+|
+1. The user presses the login button
+
+2. The user fills out the required fields
+
+3. The user presses the login button
+
+| Exceptions and alternatives
+| - The user does not have an account
+
+| Postcondition
+| The user returns to the state where they left the game
+
+| Result
+| The user returns to the state where they left the game and can carry on playing and can save the progress they make afterwards
+
+| Use case realisation
+| Technical model
+
+|===
+
+[cols="1h,4"]
+|===
+| Use case
+| A user wants to change the data of their profile
+
+| Identifier
+| UC_P_Update
+
+| Cause event
+| The user would like to change some account detailes like password
+
+| Initial run
+|
+1. The user presses their profile picture
+The players can log in to save their achievements earned in the game.
+With their accounts, they can also perform extra actions: they can edit their profile information, delete their profiles, and administrators can do the same with all existing accounts.
+
+2. The user clicks the edit button
+
+3. The user updates the information they want to edit
+
+4. The user clicks the submit button
+
+| Exceptions and alternatives
+| -
+
+| Postcondition
+| The changed profile data is updated in the database
+
+| Result
+| Afterward, the user will be able to log in with the new data.
+
+| Use case realization
+| Technical model
+
+|===
+
+[cols="1h,4"]
+|===
+| Use case
+| Profile Deletion
+
+| Identifier
+| UC_P_Delete
+
+| Cause event
+| The logged-in user wants to delete their profile.
+
+| Users
+| Logged-in user, Administrator
+
+| Initial run
+|
+1. The user clicks the profile icon
+
+2. The user clicks the delete button
+
+| Exceptions and alternatives
+| -
+
+| Postcondition
+| The profile is deleted from the database
+
+| Result
+| The profile ceases to exist, and a new profile can be created again with the same data.
+
+| Use case realization
+| Technical model
+
+|===
+
+[cols="1h,4"]
+|===
+| Use case
+| Listing Profiles
+
+| Identifier
+| UC_P_List
+
+| Cause event
+| The administrator wants to list the profiles.
+
+| Users
+| Moderator
+
+| Initial run
+|
+1. The moderator clicks on the "All Profiles" menu option,
+
+2. All user profiles are displayed, along with important information.
+
+| Exceptions and alternatives
+| -
+
+| Postcondition
+| The profiles are displayed.
+
+| Result
+| All user profiles are displayed, on which the administrator can perform actions, such as Delete.
+
+| Use case realization
+| Technical model
+
+|===
+
+== Permissions
+
+[cols="1,1,1"]
+|===
+| Use case | Permission | Roles
+
+| Account Creation
+| PROFILE_CREATE
+| General User, Administrator
+
+| Login
+| PROFILE_GET
+| User, Administrator
+
+| Modify Profile Data
+| PROFILE_UPDATE
+| Logged-in User, Moderator
+
+| Profile Deletion
+| PROFILE_DELETE
+| Logged-in User, Administrator
+
+| Listing Profiles
+| PROFILES_LIST
+| Administrator
+
+|===
+
+== Interface Design
+
+=== Login Interface
+
+==== Fields on the Interface
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Required? | Editable?
+
+| Username
+| Text input field
+| Y
+| Y
+
+| Email
+| Text field
+| Y
+| Y
+
+| Password
+| Text field
+| Y
+| Y
+
+|===
+
+==== Available Actions from the Interface
+
+[cols="1,1,1"]
+|===
+| Event | Description | Permission
+
+| Clicking the Create Account button
+| After the user fills in the input fields, clicking the button creates a profile based on the provided data.
+| PROFILE_CREATE
+|===
+
+=== Login Interface
+
+==== Fields on the Interface
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Required? | Editable?
+
+| Username
+| Text input field
+| Y
+| Y
+
+| Email
+| Text field
+| Y
+| Y
+
+| Password
+| Text field
+| Y
+| Y
+|===
+
+==== Available Actions from the Interface
+
+[cols="1,1,1"]
+|===
+| Event | Description | Permission
+
+| Clicking the Submit button
+| After filling the input fields, clicking the button logs the user in.
+| PROFILE_GET
+|===
+
+=== Modifying User Profile Data
+
+==== Fields on the Interface
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Required? | Editable?
+
+| Username
+| Text input field
+| N
+| Y
+
+| Email
+| Text field
+| N
+| Y
+
+| Password
+| Text field
+| N
+| Y
+|===
+
+==== Available Actions from the Interface
+
+[cols="1,1,1"]
+|===
+| Event | Description | Permission
+
+| Clicking the Submit button
+| After filling the input fields, clicking the button updates the profile data.
+| PROFILE_UPDATE
+|===
+
+=== Deleting User Profiles
+
+==== Fields on the Interface
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Required? | Editable?
+
+| Profile to be deleted
+| Object
+| Yes, but appears auto-filled
+| N
+
+| Delete button
+| Button
+| Y
+| N
+
+|===
+
+==== Available Actions from the Interface
+
+[cols="1,1,1"]
+|===
+| Event | Description | Permission
+
+| Clicking the Delete button
+| After clicking the button, the user profile is deleted.
+| PROFILE_DELETE
+|===
+
+=== Listing Profiles Interface
+
+All profiles are displayed one below the other, with a delete button and an edit button next to them.
+
+==== Fields on the Interface
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Required? | Editable?
+
+| Profiles
+| Object
+| Y
+| N
+
+| Edit button
+| Button
+| N
+| N
+
+| Delete button
+| Button
+| Y
+| N
+
+|===
+
+==== Available Actions from the Interface
+
+[cols="1,1,1"]
+|===
+| Event | Description | Permission
+
+| Clicking the Edit button
+| The input fields that were not editable before become editable.
+| PROFILE_UPDATE
+
+| Clicking the Delete button
+| The profile next to the clicked button is deleted.
+| PROFILE_DELETE
+
+|===
